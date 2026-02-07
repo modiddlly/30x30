@@ -114,6 +114,7 @@
           <div id="modeStack" class="hud__modes" aria-label="Active modes">
             <button id="elimPill" class="modePill" type="button" hidden>Elimination: ON</button>
             <button id="stickyPill" class="modePill" type="button" hidden>Sticky: ON</button>
+            <button id="dragDropPill" class="modePill" type="button" hidden>Drag & drop: ON</button>
             <button id="dimPill" class="modePill" type="button" hidden>Dim brush: ON</button>
             <button id="dimSelPill" class="modePill" type="button" hidden>Dim selection</button>
 
@@ -287,6 +288,14 @@
   </div>
           
           
+  <div class="hint-item">
+    <label class="menu-row">
+      <input type="checkbox" id="dragDropToggle">
+      <span>Drag & drop</span>
+    </label>
+    <div class="menu-detail" data-for="dragDropToggle" hidden>Drag a tile onto another to attempt a match.</div>
+  </div>
+
   <div class="hint-item">
     <label class="menu-row">
       <input type="checkbox" id="dimToggle">
