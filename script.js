@@ -4998,6 +4998,7 @@ document.getElementById("endOverlay")?.addEventListener("pointerdown", (e) => {
 {
   let _drag = null;
   let _insertLine = null;
+  let _ddHandled = false;
   const DRAG_THRESHOLD = 5;
 
   function _getInsertLine(){
@@ -5053,15 +5054,25 @@ document.getElementById("endOverlay")?.addEventListener("pointerdown", (e) => {
     return null;
   }
 
+  // Capture-phase click handler: suppress tile clicks already handled
+  // via pointerup, but let emoji picker clicks through
+  document.addEventListener("click", (e) => {
+    if (!_ddHandled) return;
+    _ddHandled = false;
+    if (e.target.closest(".tile-emoji-btn")) return;
+    e.stopImmediatePropagation();
+    e.preventDefault();
+  }, true);
+
   // --- pointerdown on board ---
   els.board?.addEventListener("pointerdown", (e) => {
     if (!state.dragDropMode) return;
     const tileEl = e.target.closest(".tile[data-id]");
     if (!tileEl) return;
+    if (e.target.closest(".tile-emoji-btn")) return;
     const tileId = tileEl.dataset.id;
     const t = getTileById(tileId);
     if (!t || t.done || t.removed) return;
-    if (e.target.closest(".tile-emoji-btn")) return;
 
     _drag = {
       tileId,
@@ -5075,7 +5086,11 @@ document.getElementById("endOverlay")?.addEventListener("pointerdown", (e) => {
       offsetX: 0,
       offsetY: 0
     };
-    e.preventDefault();
+  });
+
+  // Prevent native HTML5 drag during pointer drag
+  els.board?.addEventListener("dragstart", (e) => {
+    if (_drag) e.preventDefault();
   });
 
   // --- pointermove on document ---
@@ -5101,8 +5116,9 @@ document.getElementById("endOverlay")?.addEventListener("pointerdown", (e) => {
       _drag.offsetY = e.clientY - rect.top;
 
       _drag.tileEl.classList.add("drag-ghost");
-      _drag.tileEl.setAttribute("draggable", "false");
     }
+
+    e.preventDefault();
 
     _drag.clone.style.left = (e.clientX - _drag.offsetX) + "px";
     _drag.clone.style.top = (e.clientY - _drag.offsetY) + "px";
@@ -5137,38 +5153,101 @@ document.getElementById("endOverlay")?.addEventListener("pointerdown", (e) => {
     if (!_drag) return;
     const wasDragging = _drag.active;
     const dragState = _drag;
-
-    // Clean up visuals
-    if (dragState.clone) dragState.clone.remove();
-    if (dragState.tileEl) dragState.tileEl.classList.remove("drag-ghost");
-    if (dragState.matchTarget) dragState.matchTarget.classList.remove("drag-match-hover");
-    _hideInsertLine();
     _drag = null;
 
+    // Always clean shared indicators
+    if (dragState.matchTarget) dragState.matchTarget.classList.remove("drag-match-hover");
+    _hideInsertLine();
+
+    // Suppress the subsequent click event so onTileClick isn't called twice
+    _ddHandled = true;
+    setTimeout(() => { _ddHandled = false; }, 100);
+
     if (!wasDragging){
-      // Didn't move enough — let click handler fire normally
+      // Short tap — treat as normal click
+      if (dragState.tileEl) dragState.tileEl.classList.remove("drag-ghost");
       onTileClick(dragState.tileId);
       return;
     }
 
-    // Suppress the click event that fires after pointerup
-    document.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      ev.preventDefault();
-    }, { capture: true, once: true });
-
     if (dragState.matchTarget){
-      // Drop on tile → attempt match
-      const targetId = dragState.matchTarget.dataset.id;
-      state.selectedId = dragState.tileId;
-      setHUD();
-      document.querySelectorAll("[data-row]").forEach(el => {
-        rerenderRow(Number(el.dataset.row));
-      });
-      onTileClick(String(targetId));
+      // --- Drop on tile: animate merge slide, then attempt match ---
+      const clone = dragState.clone;
+      const targetEl = dragState.matchTarget;
+      const targetId = targetEl.dataset.id;
+
+      // Un-ghost the original tile
+      if (dragState.tileEl) dragState.tileEl.classList.remove("drag-ghost");
+
+      if (clone){
+        const targetRect = targetEl.getBoundingClientRect();
+        clone.classList.add("merge-slide");
+        requestAnimationFrame(() => {
+          clone.style.left = targetRect.left + "px";
+          clone.style.top = targetRect.top + "px";
+          clone.style.transform = "scale(0.7) rotate(0deg)";
+          clone.style.opacity = "0.3";
+        });
+
+        let done = false;
+        const finish = () => {
+          if (done) return;
+          done = true;
+          clone.remove();
+
+          state.selectedId = dragState.tileId;
+          setHUD();
+          document.querySelectorAll("[data-row]").forEach(el => {
+            rerenderRow(Number(el.dataset.row));
+          });
+          onTileClick(String(targetId));
+
+          // Green glow only on successful match
+          const draggedTile = getTileById(dragState.tileId);
+          if (draggedTile?.removed){
+            setTimeout(() => {
+              const keeperEl = _tileElById_(targetId);
+              if (keeperEl){
+                keeperEl.classList.add("merge-glow");
+                keeperEl.addEventListener("animationend",
+                  () => keeperEl.classList.remove("merge-glow"), { once: true });
+              }
+            }, 50);
+          }
+        };
+
+        clone.addEventListener("transitionend", finish, { once: true });
+        setTimeout(finish, 280);
+      } else {
+        state.selectedId = dragState.tileId;
+        setHUD();
+        document.querySelectorAll("[data-row]").forEach(el => {
+          rerenderRow(Number(el.dataset.row));
+        });
+        onTileClick(String(targetId));
+      }
+
     } else if (dragState.insertTarget){
-      // Drop between tiles → reorder
+      // --- Drop between tiles: reorder ---
+      if (dragState.clone) dragState.clone.remove();
+      if (dragState.tileEl) dragState.tileEl.classList.remove("drag-ghost");
+
       _ddReorderTile(dragState.tileId, dragState.insertTarget);
+
+      // Splat animation on the placed tile
+      setTimeout(() => {
+        const el = _tileElById_(dragState.tileId);
+        if (el){
+          el.classList.add("drop-splat");
+          el.addEventListener("animationend",
+            () => el.classList.remove("drop-splat"), { once: true });
+        }
+      }, 20);
+
+    } else {
+      // Dropped in empty space — just cancel
+      if (dragState.clone) dragState.clone.remove();
+      if (dragState.tileEl) dragState.tileEl.classList.remove("drag-ghost");
     }
   });
 
@@ -5178,12 +5257,10 @@ document.getElementById("endOverlay")?.addEventListener("pointerdown", (e) => {
     const sourceRow = t.row;
     const targetRow = insertInfo.row;
 
-    // Get tiles in target row excluding the dragged tile
     const targetRowTiles = state.tiles
       .filter(x => x.row === targetRow && !x.removed && !x.held && String(x.id) !== String(tileId))
       .sort((a, b) => (a.col ?? 0) - (b.col ?? 0));
 
-    // Determine insert index
     let insertIdx = insertInfo.index;
     if (insertInfo.beforeId){
       const bi = targetRowTiles.findIndex(x => String(x.id) === String(insertInfo.beforeId));
@@ -5192,12 +5269,10 @@ document.getElementById("endOverlay")?.addEventListener("pointerdown", (e) => {
       insertIdx = targetRowTiles.length;
     }
 
-    // Move tile to target row
     t.row = targetRow;
     targetRowTiles.splice(insertIdx, 0, t);
     targetRowTiles.forEach((tile, i) => { tile.col = i; });
 
-    // Compact source row if different
     if (sourceRow !== targetRow){
       const sourceRowTiles = state.tiles
         .filter(x => x.row === sourceRow && !x.removed && !x.held)

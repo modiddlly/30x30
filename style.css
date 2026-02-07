@@ -1396,6 +1396,10 @@ body.dim-on #board{ touch-action: none; }
   transition: transform 0.1s ease;
 }
 
+.tile-drag-clone.merge-slide{
+  transition: left 0.22s ease-in, top 0.22s ease-in, transform 0.22s ease-in, opacity 0.22s ease-in;
+}
+
 .tile.drag-ghost{
   opacity: 0.25;
   border: 2px dashed #aaa !important;
@@ -1420,4 +1424,22 @@ body.dim-on #board{ touch-action: none; }
   border-radius: 2px;
   z-index: 9999;
   pointer-events: none;
+}
+
+.tile.merge-glow{
+  animation: mergeGlow 0.5s ease-out;
+}
+@keyframes mergeGlow{
+  0%   { box-shadow: 0 0 0 0 rgba(76,175,80,0.6); }
+  50%  { box-shadow: 0 0 12px 4px rgba(76,175,80,0.4); }
+  100% { box-shadow: none; }
+}
+
+.tile.drop-splat{
+  animation: dropSplat 0.25s ease-out;
+}
+@keyframes dropSplat{
+  0%   { transform: scaleX(1.08) scaleY(0.92); }
+  60%  { transform: scaleX(0.97) scaleY(1.03); }
+  100% { transform: scaleX(1) scaleY(1); }
 }
