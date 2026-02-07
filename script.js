@@ -10,101 +10,217 @@
 // Usage: const categories = getCategories();
 
 const CATEGORIES = {
-  "S2l0Y2hlbiBVdGVuc2lscw==": ["Whisk", "Spatula", "Ladle", "Tongs", "Peeler", "Can opener", "Colander", "Measuring cup", "Mixing bowl", "Cutting board", "Chef's knife", "Paring knife", "Grater", "Masher", "Skimmer", "Slotted spoon", "Mortar and pestle", "Pastry brush", "Rolling pin", "Pizza cutter", "Garlic press", "Citrus juicer", "Kitchen shears", "Basting brush", "Bench scraper", "Egg slicer", "Avocado slicer", "Melon baller", "Zester", "Mandoline"],
+  "Um9tYW4gR29kcw==": ["Apollo", "Diana", "Minerva", "Vulcan", "Juno", "Bacchus", "Vesta", "Cupid", "Janus", "Flora", "Fortuna", "Aurora", "Luna", "Somnus", "Faunus", "Proserpina", "Pomona", "Terminus", "Bellona", "Quirinus", "Orcus", "Ops", "Liber", "Concordia", "Salus", "Virtus", "Honos", "Felicitas", "Spes", "Fides"],
   
-  "QnJlYWtmYXN0IEZvb2Rz": ["Toast", "Cereal", "Oatmeal", "Pancakes", "Waffles", "Bagel", "Croissant", "Muffin", "Yogurt", "Granola", "Scrambled eggs", "Fried eggs", "Omelette", "Bacon", "Sausage", "Hash browns", "French toast", "Donut", "Coffee cake", "Cinnamon roll", "Biscuits and gravy", "Breakfast burrito", "Smoothie bowl", "Fruit salad", "Cottage cheese", "Avocado toast", "Crepes", "Quiche", "Scone", "Porridge"],
+  "U2hha2VzcGVhcmUgUGxheXM=": ["Hamlet", "Macbeth", "Othello", "Tempest", "Romeo and Juliet", "Julius Caesar", "Lear", "Midsummer", "Twelfth Night", "Merchant of Venice", "Much Ado", "Taming of the Shrew", "As You Like It", "Winter's Tale", "Antony and Cleopatra", "Coriolanus", "Richard III", "Henry V", "Measure for Measure", "Cymbeline", "Pericles", "Timon of Athens", "Titus Andronicus", "Henry IV Part 1", "Henry IV Part 2", "Henry VI Part 1", "Comedy of Errors", "Two Gentlemen", "Love's Labour's Lost", "All's Well"],
   
-  "Q2xlYW5pbmcgU3VwcGxpZXM=": ["Sponge", "Dish soap", "Bleach", "Glass cleaner", "All-purpose spray", "Duster", "Mop", "Broom", "Vacuum bag", "Trash bag", "Paper towels", "Scrub brush", "Toilet bowl cleaner", "Tub and tile cleaner", "Drain cleaner", "Floor wax", "Furniture polish", "Stainless steel cleaner", "Lint roller", "Microfiber cloth", "Rubber gloves", "Bucket", "Squeegee", "Baking soda", "Vinegar", "Disinfectant wipes", "Oven cleaner", "Carpet cleaner", "Laundry detergent", "Fabric softener"],
+  "Q29mZmVlIERyaW5rcw==": ["Espresso", "Cappuccino", "Latte", "Americano", "Macchiato", "Mocha", "Flat white", "Cortado", "Ristretto", "Affogato", "Con panna", "Breve", "Red eye", "Lungo", "Doppio", "Frappe", "Cold brew", "Nitro cold brew", "Irish coffee", "Turkish coffee", "Vietnamese coffee", "Cafe au lait", "Gibraltar", "Piccolo", "Black eye", "Mazagran", "Galao", "Bombon", "Barraquito", "Shakerato"],
   
-  "U2FsYWQgSW5ncmVkaWVudHM=": ["Lettuce", "Spinach", "Arugula", "Kale", "Cucumber", "Tomato", "Carrot", "Red onion", "Bell pepper", "Radish", "Celery", "Broccoli", "Cauliflower", "Croutons", "Bacon bits", "Parmesan", "Feta", "Goat cheese", "Avocado", "Hard-boiled egg", "Grape tomatoes", "Sunflower seeds", "Chickpeas", "Artichoke hearts", "Olives", "Pecans", "Dried cranberries", "Quinoa", "Edamame", "Beets"],
+  "QmlyZHM=": ["Robin", "Sparrow", "Cardinal", "Blue jay", "Crow", "Pigeon", "Seagull", "Hawk", "Eagle", "Owl", "Hummingbird", "Woodpecker", "Duck", "Swan", "Pelican", "Flamingo", "Penguin", "Ostrich", "Peacock", "Parrot", "Toucan", "Finch", "Wren", "Starling", "Magpie", "Heron", "Kingfisher", "Albatross", "Puffin", "Kookaburra"],
   
-  "U2FuZHdpY2ggRmlsbGluZ3M=": ["Turkey", "Ham", "Roast beef", "Salami", "Chicken salad", "Egg salad", "Tuna salad", "Peanut butter", "Jelly", "Cheese", "Bacon", "Lettuce", "Tomato", "Pickles", "Onions", "Mayonnaise", "Mustard", "Avocado", "Hummus", "Pesto", "Meatballs", "Pulled pork", "Falafel", "Pastrami", "Swiss", "Coleslaw", "Caprese", "Roasted peppers", "Cucumber", "Sprouts"],
+  "RmFtb3VzIFBhaW50ZXJz": ["Picasso", "Van Gogh", "Monet", "Da Vinci", "Rembrandt", "Michelangelo", "Dali", "Warhol", "Renoir", "Cezanne", "Matisse", "Goya", "Klimt", "Vermeer", "Degas", "Pollock", "Kandinsky", "Raphael", "Caravaggio", "Botticelli", "Manet", "Toulouse-Lautrec", "Munch", "Chagall", "Rousseau", "Hopper", "Rothko", "Kahlo", "O'Keeffe", "Basquiat"],
   
-  "UGl6emEgVG9wcGluZ3M=": ["Pepperoni", "Mushrooms", "Sausage", "Green peppers", "Onions", "Black olives", "Ham", "Bacon", "Pineapple", "Jalapenos", "Anchovies", "Basil", "Spinach", "Feta", "Goat cheese", "Ricotta", "Artichokes", "Roasted garlic", "Sun-dried tomatoes", "Prosciutto", "Arugula", "Chicken", "Beef", "Philly steak", "BBQ sauce", "Ranch", "Hot sauce", "Garlic butter", "Parmesan", "Red onion"],
+  "SmV3ZWxyeQ==": ["Ring", "Necklace", "Bracelet", "Earrings", "Pendant", "Brooch", "Anklet", "Tiara", "Choker", "Locket", "Charm bracelet", "Cufflinks", "Bangle", "Chain", "Stud earrings", "Hoop earrings", "Cocktail ring", "Signet ring", "Toe ring", "Belly chain", "Nose ring", "Tennis bracelet", "Friendship bracelet", "Watch", "Cameo", "Collar necklace", "Statement necklace", "Body chain", "Hair comb", "Lapel pin"],
   
-  "UGFzdGEgU2hhcGVz": ["Spaghetti", "Penne", "Rigatoni", "Fusilli", "Farfalle", "Lasagna", "Fettuccine", "Linguine", "Capellini", "Cannelloni", "Ravioli", "Tortellini", "Manicotti", "Ziti", "Orecchiette", "Pappardelle", "Bucatini", "Orzo", "Stelline", "Rotini", "Conchiglie", "Gemelli", "Gnocchi", "Ditalini", "Radiatori", "Cavatappi", "Lumaconi", "Paccheri", "Trenette", "Garganelli"],
+  "TWF0aGVtYXRpY2FsIENvbmNlcHRz": ["Addition", "Subtraction", "Multiplication", "Division", "Fraction", "Decimal", "Percentage", "Exponent", "Square root", "Prime number", "Integer", "Variable", "Equation", "Inequality", "Ratio", "Proportion", "Average", "Median", "Mode", "Probability", "Geometry", "Algebra", "Calculus", "Theorem", "Proof", "Function", "Derivative", "Integral", "Matrix", "Vector"],
   
-  "Q2hlZXNlIFZhcmlldGllcw==": ["Cheddar", "Mozzarella", "Parmesan", "Swiss", "Brie", "Gouda", "Blue cheese", "Feta", "Provolone", "Monterey Jack", "Colby", "Cottage", "American", "Pepper Jack", "Havarti", "Goat cheese", "Cream cheese", "Ricotta", "Mascarpone", "Gruyere", "Muenster", "Camembert", "Roquefort", "Stilton", "Gorgonzola", "Manchego", "Pecorino", "Queso fresco", "Paneer", "Halloumi"],
+  "Q2Fycw==": ["Sedan", "SUV", "Coupe", "Convertible", "Hatchback", "Wagon", "Minivan", "Pickup truck", "Sports car", "Crossover", "Compact", "Subcompact", "Luxury car", "Electric car", "Hybrid", "Muscle car", "Hot hatch", "Roadster", "Grand tourer", "Limousine", "Station wagon", "Panel van", "Microcar", "Supercar", "Pony car", "Shooting brake", "Fastback", "Hardtop", "Targa top", "Speedster"],
   
-  "SGVyYnMgYW5kIFNwaWNlcw==": ["Basil", "Oregano", "Thyme", "Rosemary", "Sage", "Parsley", "Cilantro", "Dill", "Mint", "Chives", "Tarragon", "Bay leaf", "Cumin", "Coriander", "Paprika", "Cayenne", "Curry powder", "Turmeric", "Ginger", "Garlic powder", "Onion powder", "Cinnamon", "Nutmeg", "Cloves", "Allspice", "Cardamom", "Fennel", "Anise", "Saffron", "Sumac"],
+  "QmFraW5nIFRlY2huaXF1ZXM=": ["Creaming", "Folding", "Kneading", "Whisking", "Proofing", "Blind baking", "Laminating", "Tempering chocolate", "Caramelizing", "Glazing", "Piping", "Scoring", "Dusting", "Crimping", "Docking", "Egg wash", "Resting dough", "Stretching", "Rolling", "Cutting in", "Sifting", "Bloom gelatin", "Ribbon stage", "Soft peaks", "Stiff peaks", "Autolyse", "Benching", "Windowpane test", "Banneton", "Bain marie"],
   
-  "RnVybml0dXJlIFR5cGVz": ["Sofa", "Chair", "Table", "Bed", "Desk", "Dresser", "Nightstand", "Bookcase", "Coffee table", "Armchair", "Ottoman", "Bench", "Stool", "Cabinet", "Shelving", "Wardrobe", "Sideboard", "Buffet", "Hutch", "Chest", "Credenza", "Entertainment center", "Vanity", "Daybed", "Love seat", "Recliner", "Church pew", "Rocking chair", "Footstool", "Etagere"],
+  "U3BvcnRz": ["Soccer", "Basketball", "Baseball", "Football", "Tennis", "Golf", "Hockey", "Swimming", "Volleyball", "Boxing", "Wrestling", "Track and field", "Gymnastics", "Skiing", "Surfing", "Skateboarding", "Cricket", "Rugby", "Lacrosse", "Badminton", "Table tennis", "Cycling", "Rowing", "Fencing", "Archery", "Diving", "Sailing", "Water polo", "Handball", "Squash"],
   
-  "QmVkcm9vbSBJdGVtcw==": ["Mattress", "Pillow", "Blanket", "Comforter", "Sheets", "Duvet", "Alarm clock", "Lamp", "Curtains", "Rug", "Mirror", "Closet", "Hamper", "Desktop fan", "Space heater", "Bed frame", "Headboard", "Box spring", "Throw pillows", "Bolster", "Bedskirt", "Canopy", "Wall art", "Full-length mirror", "Hangers", "Storage bins", "Jump rope", "Blackout curtains", "Area rug", "Laundry basket"],
+  "Q29tcG9zZXJz": ["Mozart", "Beethoven", "Bach", "Chopin", "Vivaldi", "Tchaikovsky", "Brahms", "Handel", "Debussy", "Wagner", "Schubert", "Liszt", "Verdi", "Haydn", "Mendelssohn", "Schumann", "Rachmaninoff", "Dvorak", "Strauss", "Mahler", "Ravel", "Prokofiev", "Shostakovich", "Stravinsky", "Puccini", "Grieg", "Sibelius", "Elgar", "Satie", "Gershwin"],
   
-  "V2VhdGhlciBQaGVub21lbmE=": ["Rain", "Snow", "Sleet", "Hail", "Fog", "Mist", "Clouds", "Sunshine", "Wind", "Thunderstorm", "Lightning", "Rainbow", "Frost", "Dew", "Drizzle", "Blizzard", "Dust storm", "Tornado", "Hurricane", "Chinook winds", "Heat wave", "Cold snap", "Drought", "Humidity", "Dewpoint", "Barometric pressure", "Freezing rain", "Aurora", "Haze", "Flurries"],
+  "RGVzc2VydHM=": ["Ice cream", "Cake", "Pie", "Cookies", "Brownies", "Cheesecake", "Tiramisu", "Pudding", "Mousse", "Tart", "Cupcake", "Macaron", "Eclair", "Cannoli", "Flan", "Creme brulee", "Panna cotta", "Baklava", "Gelato", "Sorbet", "Cobbler", "Pavlova", "Trifle", "Biscotti", "Profiterole", "Mille-feuille", "Napoleons", "Churros", "Beignets", "Strudel"],
   
-  "VHJlZSBQYXJ0cw==": ["Trunk", "Branches", "Leaves", "Roots", "Bark", "Twigs", "Canopy", "Crown", "Sapwood", "Heartwood", "Growth rings", "Buds", "Seeds", "Fruit", "Cones", "Flowers", "Needles", "Taproot", "Lateral roots", "Cambium", "Phloem", "Xylem", "Pith", "Lenticels", "Catkins", "Acorns", "Pod", "Samara", "Sprout", "Stump"],
+  "T2NlYW5z": ["Pacific", "Atlantic", "Indian", "Arctic", "Southern", "Mediterranean", "Caribbean", "Baltic", "North Sea", "Red Sea", "Black Sea", "Caspian", "Dead Sea", "Persian Gulf", "Gulf of Mexico", "Bering Sea", "South China Sea", "Coral Sea", "Tasman Sea", "Arabian Sea", "Bay of Bengal", "Sea of Japan", "Yellow Sea", "Adriatic", "Aegean", "Irish Sea", "Norwegian Sea", "Barents Sea", "East China Sea", "Andaman Sea"],
   
-  "Rmxvd2VyIFBhcnRz": ["Petals", "Stem", "Leaves", "Sepals", "Stamen", "Pistil", "Anther", "Filament", "Stigma", "Style", "Ovary", "Ovule", "Pedicel", "Receptacle", "Pollen", "Nectar", "Bud", "Corolla", "Calyx", "Peduncle", "Bract", "Thorns", "Tendril", "Node", "Stolon", "Tuber", "Bulb", "Rhizome", "Seedpod", "Chaff"],
+  "RmFtb3VzIE5vdmVsaXN0cw==": ["Austen", "Dickens", "Hemingway", "Fitzgerald", "Tolstoy", "Dostoevsky", "Orwell", "Woolf", "Joyce", "Kafka", "Proust", "Garcia Marquez", "Morrison", "Faulkner", "Steinbeck", "Twain", "Melville", "Vonnegut", "Salinger", "Nabokov", "Pynchon", "Atwood", "Rushdie", "Murakami", "Baldwin", "Ellison", "Heller", "McCarthy", "DeLillo", "Roth"],
   
-  "Q2FtcGluZyBHZWFy": ["Tent", "Sleeping bag", "Sleeping pad", "Cookstove", "Cooler", "Lantern", "Headlamp", "Backpack", "Water filter", "Compass", "Trekking poles", "Multi-tool", "First aid kit", "Matches", "Paracord", "Tarp", "Ground cloth", "Camping chair", "Collapsible table", "Bear canister", "Spork", "Folding shovel", "Hammock", "Dry bags", "Bug spray", "Sunscreen", "Trash bags", "Camp soap", "Camelbak", "Tiny towel"],
+  "U29sYXIgU3lzdGVt": ["Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Moon", "Asteroid belt", "Kuiper belt", "Oort cloud", "Comet", "Meteor", "Dwarf planet", "Pluto", "Ceres", "Eris", "Makemake", "Haumea", "Io", "Europa", "Ganymede", "Callisto", "Titan", "Enceladus", "Triton", "Charon", "Phobos"],
   
-  "Qm9vayBHZW5yZXM=": ["Fiction", "Nonfiction", "Mystery", "Thriller", "Romance", "Science fiction", "Fantasy", "Horror", "Historical fiction", "Biography", "Memoir", "Self-help", "True crime", "Poetry", "Drama", "Comedy", "Young adult", "Children's", "Graphic novel", "Essay", "Anthology", "Cookbook", "Travel", "Art book", "Philosophy", "Psychology", "Parenting", "Business", "Political", "Satire"],
+  "S2l0Y2hlbiBLbml2ZXM=": ["Chef's knife", "Paring knife", "Bread knife", "Boning knife", "Carving knife", "Cleaver", "Santoku", "Utility knife", "Steak knife", "Fillet knife", "Butcher knife", "Nakiri", "Serrated knife", "Palette knife", "Oyster knife", "Peeler", "Kitchen shears", "Cheese knife", "Tomato knife", "Grapefruit knife", "Pizza cutter", "Mezzaluna", "Mandoline", "Deba", "Yanagiba", "Usuba", "Gyuto", "Petty knife", "Honesuki", "Bunka"],
   
-  "UG9kY2FzdCBDYXRlZ29yaWVz": ["True crime", "Comedy", "News", "Interviews", "Storytelling", "Sports", "Technology", "Politics", "History", "Science", "Business", "Self-improvement", "Pop culture", "Health and wellness", "Parenting", "Music", "Food", "Society and culture", "Relationships", "Education", "Religion", "Mental health", "Fantasy football", "Philosophy", "Nature", "Language learning", "Book club", "Film reviews", "Daily news", "Deep dive"],
+  "TW91bnRhaW5z": ["Everest", "K2", "Kilimanjaro", "Denali", "Matterhorn", "Mont Blanc", "Fuji", "Olympus", "Vesuvius", "Rainier", "Whitney", "Aconcagua", "Elbrus", "McKinley", "Logan", "Pikes Peak", "Shasta", "Hood", "Washington", "Adams", "Elbert", "Massive", "Harvard", "Antero", "Princeton", "Yale", "Bross", "Lincoln", "Cameron", "Grays"],
   
-  "Q2FyZCBHYW1lIFRlcm1z": ["Draw", "Discard", "Shuffle", "Deal", "Hand", "Deck", "Trump", "Bid", "Trick", "Fold", "Raise", "Call", "Bluff", "Ante", "Wildcard", "Wild", "Skip", "Reverse", "Draw two", "Draw four", "Meld", "Lay down", "Knock", "Gin", "Pass", "Cut", "Turn", "Flop", "All-in", "Split"],
+  "V2luZXM=": ["Cabernet Sauvignon", "Merlot", "Pinot Noir", "Chardonnay", "Sauvignon Blanc", "Riesling", "Zinfandel", "Malbec", "Syrah", "Shiraz", "Pinot Grigio", "Moscato", "Chianti", "Bordeaux", "Burgundy", "Champagne", "Prosecco", "Rioja", "Tempranillo", "Sangiovese", "Barbera", "Nebbiolo", "Grenache", "Viognier", "Gewurztraminer", "Chenin Blanc", "Semillon", "Petite Sirah", "Mourvedre", "Cava"],
   
-  "RW1haWwgRm9sZGVycw==": ["Inbox", "Sent", "Drafts", "Trash", "Spam", "Archive", "Starred", "Important", "Social", "Promotions", "Updates", "Work", "Personal", "Family", "Travel", "Finance", "Shopping", "Subscriptions", "Newsletters", "Receipts", "Confirmations", "Reminders", "Follow-up", "To-do", "Waiting on", "Later", "Flagged", "Unread", "Read", "VIP"],
+  "QnJlYWRz": ["Sourdough", "Baguette", "Ciabatta", "Focaccia", "Challah", "Brioche", "Rye", "Pumpernickel", "Whole wheat", "White bread", "Multigrain", "Pita", "Naan", "Tortilla", "English muffin", "Bagel", "Croissant", "Pretzel", "Cornbread", "Flatbread", "Injera", "Matzo", "Lavash", "Arepa", "Bannock", "Damper", "Fry bread", "Mantou", "Bao", "Paratha"],
   
-  "Q2FsZW5kYXIgRXZlbnQgVHlwZXM=": ["Meeting", "Appointment", "Birthday", "Anniversary", "Vacation", "Deadline", "Reminder", "Conference", "Interview", "Dinner", "Lunch", "Breakfast", "Coffee", "Happy hour", "Workout", "Doctor visit", "Dentist", "Haircut", "Flight", "Hotel check-in", "School event", "Practice", "Game", "Concert", "Movie", "Party", "Wedding", "Baby shower", "Holiday", "Out of office"],
+  "Qm9keSBQYXJ0cw==": ["Head", "Neck", "Shoulder", "Chest", "Back", "Arm", "Elbow", "Wrist", "Hand", "Finger", "Thumb", "Waist", "Hip", "Leg", "Knee", "Ankle", "Foot", "Toe", "Stomach", "Ribs", "Spine", "Pelvis", "Collarbone", "Shin", "Calf", "Thigh", "Forearm", "Bicep", "Tricep", "Palm"],
   
-  "U2hvZSBUeXBlcw==": ["Sneakers", "Boots", "Sandals", "Heels", "Flats", "Loafers", "Oxfords", "Moccasins", "Clogs", "Flip-flops", "Mules", "Pumps", "Wedges", "Stilettos", "Ankle boots", "Knee-high boots", "Chelsea boots", "Rain boots", "Hiking boots", "Running shoes", "Cross trainers", "Basketball shoes", "Dress shoes", "Ballet flats", "Mary Janes", "Espadrilles", "Slippers", "Crocs", "Birkenstocks", "Water shoes"],
+  "VHJlZXM=": ["Oak", "Maple", "Pine", "Birch", "Willow", "Cedar", "Elm", "Ash", "Spruce", "Fir", "Beech", "Poplar", "Aspen", "Hickory", "Cherry", "Cypress", "Redwood", "Sequoia", "Sycamore", "Dogwood", "Juniper", "Hemlock", "Larch", "Alder", "Basswood", "Cottonwood", "Tamarack", "Ironwood", "Chestnut", "Hawthorn"],
   
-  "RmlsZSBFeHRlbnNpb25z": [".jpg", ".png", ".gif", ".pdf", ".docx", ".xlsx", ".pptx", ".txt", ".csv", ".zip", ".mp3", ".mp4", ".mov", ".avi", ".wav", ".html", ".css", ".js", ".json", ".xml", ".svg", ".aiff", ".exe", ".dmg", ".rar", ".tif", ".psd", ".eps", ".ai", ".indd"],
+  "Q2hlZXNlcw==": ["Cheddar", "Mozzarella", "Parmesan", "Brie", "Gouda", "Swiss", "Blue cheese", "Feta", "Provolone", "Camembert", "Gruyere", "Manchego", "Havarti", "Colby", "Monterey Jack", "Ricotta", "Gorgonzola", "Roquefort", "Stilton", "Fontina", "Muenster", "Edam", "Jarlsberg", "Taleggio", "Raclette", "Pecorino", "Boursin", "Halloumi", "Paneer", "Limburger"],
   
-  "Q2FuZGxlIFNjZW50cw==": ["Vanilla", "Lavender", "Cinnamon", "Pine", "Ocean breeze", "Fresh linen", "Coconut", "Citrus", "Apple cider", "Pumpkin spice", "Cherry", "Rose", "Jasmine", "Eucalyptus", "Sandalwood", "Cedarwood", "Coffee", "Brown sugar", "Caramel", "Chocolate", "Cookie dough", "Baked goods", "Lemon", "Mint", "Berry", "Peach", "Mango", "Cotton", "Baby powder", "Bamboo"],
+  "U3BpY2VzIGFuZCBTZWFzb25pbmdz": ["Salt", "Pepper", "Garlic powder", "Onion powder", "Paprika", "Cumin", "Oregano", "Basil", "Thyme", "Rosemary", "Cinnamon", "Nutmeg", "Ginger", "Turmeric", "Cayenne", "Chili powder", "Coriander", "Cardamom", "Clove", "Bay leaf", "Dill", "Sage", "Parsley", "Mustard seed", "Celery salt", "Garlic salt", "Seasoning salt", "Italian seasoning", "Herbes de Provence", "Old Bay"],
   
-  "Q29mZmVlIE9yZGVyIE1vZGlmaWVycw==": ["Extra shot", "Decaf", "Half-caf", "Oat milk", "Almond milk", "Skim milk", "Whole milk", "Soy milk", "Coconut milk", "Heavy cream", "Sweet cream", "Sugar-free", "Extra hot", "Iced", "Over ice", "With room", "Foam", "No foam", "Extra foam", "Whipped cream", "Caramel drizzle", "Vanilla syrup", "Hazelnut", "Cinnamon", "Pumpkin spice", "Light ice", "Light foam", "Double blended", "Light water", "Blonde roast"],
+  "Rmxvd2Vycw==": ["Rose", "Tulip", "Daisy", "Sunflower", "Lily", "Orchid", "Carnation", "Peony", "Daffodil", "Iris", "Poppy", "Violet", "Lavender", "Hydrangea", "Chrysanthemum", "Marigold", "Dahlia", "Zinnia", "Snapdragon", "Pansy", "Petunia", "Begonia", "Geranium", "Impatiens", "Hibiscus", "Jasmine", "Gardenia", "Azalea", "Camellia", "Magnolia"],
   
-  "UGFpbnQgRmluaXNoZXM=": ["Matte", "Flat", "Eggshell", "Satin", "Semi-gloss", "Gloss", "High-gloss", "Chalk", "Metallic", "Pearl", "Textured", "Stucco", "Venetian plaster", "Suede", "Sand finish", "Antique", "Distressed", "Rustic", "Crackle", "Patina", "Ombre", "Sponge", "Rag rolled", "Strié", "Marbled", "Washed", "Glazed", "Brushed", "Sprayed", "Lacquer"],
+  "VHlwZXMgb2YgQnJlYWQ=": ["Sliced", "Whole grain", "French", "Italian", "Marble rye", "Potato", "Oat", "Honey wheat", "Twelve grain", "Seven grain", "Seeded", "Cracked wheat", "Sprouted grain", "Cinnamon raisin", "Sunflower seed", "Flaxseed", "Rosemary olive oil", "Jalapeno cheddar", "Everything", "Sesame", "Onion", "Garlic", "Cheese", "Herb", "Cranberry", "Date nut", "Beer bread", "Olive", "Pretzel bread", "Dinner roll"],
   
-  "RmFicmljIFBhdHRlcm5z": ["Stripes", "Polka dots", "Checked", "Plaid", "Floral", "Paisley", "Herringbone", "Houndstooth", "Gingham", "Tie-dye", "Animal print", "Camouflage", "Damask", "Toile", "Chevron", "Ikat", "Argyle", "Geometric", "Abstract", "Animal", "Tropical", "Botanical", "Dot", "Grid", "Tartan", "Tweed", "Denim weave", "Quilted", "Embroidered", "Lace"],
+  "UmVzdGF1cmFudCBEaXNoZXM=": ["Burger", "Pizza", "Steak", "Chicken wings", "Caesar salad", "French fries", "Onion rings", "Nachos", "Quesadilla", "Tacos", "Burrito", "Pad Thai", "Sushi", "Ramen", "Pho", "Fried rice", "Spring rolls", "Dumplings", "General Tso's", "Kung Pao", "Tikka masala", "Butter chicken", "Falafel", "Shawarma", "Gyro", "Kebab", "Schnitzel", "Fish and chips", "Shepherd's pie", "Lasagna"],
   
-  "QnJvd3NlciBUYWJzIFlvdSBBbHdheXMgSGF2ZSBPcGVu": ["Email", "Calendar", "Slack", "Google Docs", "Spotify", "YouTube", "GitHub", "News", "Weather", "Google Maps", "Trello", "Notion", "Figma", "Twitter", "LinkedIn", "Facebook", "Instagram", "Reddit", "Amazon", "Netflix", "Discord", "WhatsApp Web", "Google Translate", "Google Drive", "Google Photos", "Google Keep", "ChatGPT", "Canva", "Zoom", "Gmail"],
+  "RGluZXJ3YXJl": ["Plate", "Bowl", "Cup", "Mug", "Saucer", "Dinner plate", "Salad plate", "Bread plate", "Soup bowl", "Cereal bowl", "Pasta bowl", "Serving platter", "Gravy boat", "Creamer", "Sugar bowl", "Teapot", "Coffee pot", "Pitcher", "Serving bowl", "Tureen", "Charger plate", "Ramekin", "Espresso cup", "Demitasse", "Teacup", "Sauce dish", "Butter dish", "Salt cellar", "Egg cup", "Fruit bowl"],
   
-  "S2V5Ym9hcmQgU2hvcnRjdXQgQWN0aW9ucw==": ["Copy", "Paste", "Cut", "Undo", "Redo", "Select all", "Save", "Print", "Find", "New tab", "Close tab", "Refresh", "Bold", "Italic", "Underline", "Zoom in", "Zoom out", "Full screen", "Switch window", "Minimize", "New window", "Open file", "Quit", "Screenshot", "Select word", "Select line", "Delete line", "Duplicate line", "Show desktop", "Force quit"],
+  "U2hvcCBUeXBlcw==": ["Grocery store", "Bakery", "Butcher", "Deli", "Pharmacy", "Hardware store", "Bookstore", "Coffee shop", "Restaurant", "Cafe", "Bar", "Clothing store", "Shoe store", "Jewelry store", "Florist", "Pet store", "Toy store", "Electronics store", "Furniture store", "Department store", "Convenience store", "Gift shop", "Music store", "Sporting goods", "Auto parts", "Beauty supply", "Craft store", "Thrift store", "Antique shop", "Pawn shop"],
   
-  "Rm9udCBGYW1pbGllcw==": ["Arial", "Times New Roman", "Helvetica", "Courier", "Verdana", "Georgia", "Comic Sans", "Trebuchet", "Impact", "Garamond", "Futura", "Rockwell", "Gill Sans", "Miriam", "Bodoni", "Calibri", "Cambria", "Century Gothic", "Optima", "Palatino", "Bookman", "Gotham", "Avenir", "Din Pro", "Proxima Nova", "Montserrat", "Open Sans", "Roboto", "Lato", "Poppins"],
+  "VHlwZXMgb2YgUGFwZXI=": ["Printer paper", "Construction paper", "Cardstock", "Tissue paper", "Newspaper", "Magazine paper", "Notebook paper", "Graph paper", "Tracing paper", "Parchment", "Wax paper", "Butcher paper", "Kraft paper", "Rice paper", "Vellum", "Watercolor paper", "Drawing paper", "Sketch paper", "Bristol board", "Poster board", "Cardboard", "Corrugated", "Manila", "Bond paper", "Copy paper", "Legal paper", "Letter size", "Resume paper", "Photo paper", "Glossy paper"],
   
-  "Qm9hcmQgR2FtZSBDb21wb25lbnRz": ["Dice", "Tiles", "Cards", "Pawns", "Tokens", "Board", "Spinner", "Hourglass", "Timer", "Scorepad", "Rulebook", "Money", "Property cards", "Chance cards", "Community chest", "Miniatures", "Meeples", "Cubes", "Markers", "Counters", "Development cards", "Resource cards", "Battle mat", "Player boards", "Reference cards", "Score tracker", "Resource tracker", "Dice bag", "Card sleeves", "First player marker"],
-  
-  "VGVubmlzIFRlcm1z": ["Serve", "Ace", "Deuce", "Advantage", "Love", "Fault", "Let", "Forehand", "Backhand", "Volley", "Groundstroke", "Lob", "Smash", "Drop shot", "Slice", "Topspin", "Baseline", "Alley", "Tiebreaker", "Break point", "Match point", "Set point", "Game point", "Crosscourt", "Down the line", "Unforced error", "Winner", "Double fault", "Three-set match", "Net cord"]
+  "VHlwZXMgb2YgU2hvZXM=": ["Sneakers", "Boots", "Sandals", "Loafers", "Oxfords", "Heels", "Flats", "Slippers", "Flip flops", "Wedges", "Pumps", "Mules", "Clogs", "Espadrilles", "Mary Janes", "Brogues", "Monk straps", "Derby shoes", "Chelsea boots", "Ankle boots", "Knee high boots", "Cowboy boots", "Combat boots", "Rain boots", "Snow boots", "Hiking boots", "Work boots", "Running shoes", "Cross trainers", "Ballet flats"]
 };
 
 const CATEGORY_HINTS = {
-  "S2l0Y2hlbiBVdGVuc2lscw==": ["You'll find these in drawers and on wall hooks", "Tools for mixing, cutting, scraping, and serving"],
-  "QnJlYWtmYXN0IEZvb2Rz": ["What you'd eat before noon", "Things you pair with coffee or juice"],
-  "Q2xlYW5pbmcgU3VwcGxpZXM=": ["Under the kitchen sink or in the utility closet", "Things that help you scrub, wipe, and deodorize"],
-  "U2FsYWQgSW5ncmVkaWVudHM=": ["Building blocks for a bowl of greens", "Raw, fresh, and often tossed with dressing"],
-  "U2FuZHdpY2ggRmlsbGluZ3M=": ["What goes between two slices of bread", "Proteins, spreads, veggies, and condiments"],
-  "UGl6emEgVG9wcGluZ3M=": ["What you add on top of cheese and sauce", "Options from the pizza menu"],
-  "UGFzdGEgU2hhcGVz": ["Italian noodles in all their forms", "Long, short, tubular, or stuffed"],
-  "Q2hlZXNlIFZhcmlldGllcw==": ["From mild to sharp, soft to hard", "Dairy products from around the world"],
-  "SGVyYnMgYW5kIFNwaWNlcw==": ["What you add to flavor a dish", "Dried or fresh, in jars or bunches"],
-  "RnVybml0dXJlIFR5cGVz": ["Big items that fill up a room", "What you sit on, store in, or sleep on"],
-  "QmVkcm9vbSBJdGVtcw==": ["Where you sleep and get ready for the day", "Things that help you rest, store, and decorate"],
-  "V2VhdGhlciBQaGVub21lbmE=": ["What you check before going outside", "Atmospheric conditions that change daily"],
-  "VHJlZSBQYXJ0cw==": ["Anatomy of something tall and woody", "From roots to canopy, inside and out"],
-  "Rmxvd2VyIFBhcnRz": ["Anatomy of a blooming plant", "Petals are just the beginning"],
-  "Q2FtcGluZyBHZWFy": ["What you pack for the wilderness", "Essentials for sleeping outdoors and cooking over fire"],
-  "Qm9vayBHZW5yZXM=": ["How the library organizes its shelves", "Broad categories of stories and subjects"],
-  "UG9kY2FzdCBDYXRlZ29yaWVz": ["How you'd browse audio shows", "Topics and styles that podcasts fall into"],
-  "Q2FyZCBHYW1lIFRlcm1z": ["Actions and phrases during a game", "What you do with a deck or hand"],
-  "RW1haWwgRm9sZGVycw==": ["Where your messages get sorted", "Organizational categories in your inbox"],
-  "Q2FsZW5kYXIgRXZlbnQgVHlwZXM=": ["What you'd name a block of time", "Entries in your digital or paper planner"],
-  "U2hvZSBUeXBlcw==": ["Footwear for different occasions", "From casual to formal, sporty to dressy"],
-  "RmlsZSBFeHRlbnNpb25z": ["What comes after the dot in a filename", "How your computer knows what kind of file it is"],
-  "Q2FuZGxlIFNjZW50cw==": ["Fragrances you'd find in wax", "What you smell when you light them up"],
-  "Q29mZmVlIE9yZGVyIE1vZGlmaWVycw==": ["How you customize your latte", "Things you ask the barista to add or change"],
-  "UGFpbnQgRmluaXNoZXM=": ["Sheen levels and textures for walls", "How the surface looks after it dries"],
-  "RmFicmljIFBhdHRlcm5z": ["What's printed or woven into cloth", "Visual designs on textiles"],
-  "QnJvd3NlciBUYWJzIFlvdSBBbHdheXMgSGF2ZSBPcGVu": ["The tabs that never get closed", "Your digital daily drivers"],
-  "S2V5Ym9hcmQgU2hvcnRjdXQgQWN0aW9ucw==": ["What you can do with Cmd+Key or Ctrl+Key", "Fast ways to do common tasks without a mouse"],
-  "Rm9udCBGYW1pbGllcw==": ["Typefaces you choose in word processors", "Text styles with distinct names"],
-  "Qm9hcmQgR2FtZSBDb21wb25lbnRz": ["Physical pieces in the box", "Things you use to play on tabletop"],
-  "VGVubmlzIFRlcm1z": ["Words you hear during a match", "Actions, scores, and shots on the court"]
+  "Um9tYW4gR29kcw==": [
+    "Mythological figures from ancient Italy who governed various domains.",
+    "Deities whose names often match planets in our solar system."
+  ],
+  
+  "U2hha2VzcGVhcmUgUGxheXM=": [
+    "Works performed at the Globe Theatre and beyond.",
+    "Tragedies, comedies, and histories by the Bard."
+  ],
+  
+  "Q29mZmVlIERyaW5rcw==": [
+    "Orders you might hear at a cafe, from simple to elaborate.",
+    "Espresso-based beverages and brewing styles from around the world."
+  ],
+  
+  "QmlyZHM=": [
+    "Feathered creatures you might spot in backyards or in the wild.",
+    "From tiny singers to large flightless species."
+  ],
+  
+  "RmFtb3VzIFBhaW50ZXJz": [
+    "Artists whose works hang in major museums worldwide.",
+    "Masters of canvas from Impressionism to Abstract Expressionism and beyond."
+  ],
+  
+  "SmV3ZWxyeQ==": [
+    "Accessories worn for adornment or special occasions.",
+    "Items often made with precious metals and stones."
+  ],
+  
+  "TWF0aGVtYXRpY2FsIENvbmNlcHRz": [
+    "Terms you'd encounter in math class from elementary through college.",
+    "Operations, objects, and fields of study in the world of numbers."
+  ],
+  
+  "Q2Fycw==": [
+    "Vehicle body styles and categories seen on roads.",
+    "From practical family haulers to performance machines."
+  ],
+  
+  "QmFraW5nIFRlY2huaXF1ZXM=": [
+    "Actions and methods used when working with dough and batter.",
+    "Skills that separate novice bakers from pastry chefs."
+  ],
+  
+  "U3BvcnRz": [
+    "Athletic competitions played professionally and recreationally.",
+    "Games requiring physical skill, from team events to individual pursuits."
+  ],
+  
+  "Q29tcG9zZXJz": [
+    "Musicians who wrote symphonies, concertos, and operas.",
+    "Classical masters from Baroque through Romantic eras and beyond."
+  ],
+  
+  "RGVzc2VydHM=": [
+    "Sweet treats enjoyed after dinner or as special indulgences.",
+    "From simple scoops to elaborate French patisserie."
+  ],
+  
+  "T2NlYW5z": [
+    "Major bodies of water covering most of Earth's surface.",
+    "Saltwater regions from vast expanses to smaller enclosed seas."
+  ],
+  
+  "RmFtb3VzIE5vdmVsaXN0cw==": [
+    "Authors who penned influential works of fiction.",
+    "Literary giants from Victorian England to contemporary America and beyond."
+  ],
+  
+  "U29sYXIgU3lzdGVt": [
+    "Celestial objects orbiting our star.",
+    "Planets, moons, and regions studied by astronomers."
+  ],
+  
+  "S2l0Y2hlbiBLbml2ZXM=": [
+    "Cutting tools found in culinary settings.",
+    "Blades for slicing, dicing, and specialized food prep tasks."
+  ],
+  
+  "TW91bnRhaW5z": [
+    "Peaks around the world, from famous climbs to local landmarks.",
+    "Elevated landforms named and measured by geographers."
+  ],
+  
+  "V2luZXM=": [
+    "Beverages made from fermented grapes.",
+    "Varieties and regions found on restaurant wine lists."
+  ],
+  
+  "QnJlYWRz": [
+    "Baked goods that are staples across many cultures.",
+    "From crusty loaves to soft flatbreads and sweet rolls."
+  ],
+  
+  "Qm9keSBQYXJ0cw==": [
+    "Anatomical features that make up human form.",
+    "External structures from head to toe."
+  ],
+  
+  "VHJlZXM=": [
+    "Woody plants found in forests and landscapes.",
+    "Species identified by leaf shape, bark, and growth habits."
+  ],
+  
+  "Q2hlZXNlcw==": [
+    "Dairy products aged and enjoyed in countless varieties.",
+    "From mild and creamy to sharp and pungent options."
+  ],
+  
+  "U3BpY2VzIGFuZCBTZWFzb25pbmdz": [
+    "Flavor enhancers kept in kitchen cabinets and spice racks.",
+    "Dried herbs, ground seeds, and blended mixtures for cooking."
+  ],
+  
+  "Rmxvd2Vycw==": [
+    "Blooming plants grown in gardens and sold by florists.",
+    "Colorful blossoms from common yards to exotic varieties."
+  ],
+  
+  "VHlwZXMgb2YgQnJlYWQ=": [
+    "Different styles and flavors found in bakery aisles.",
+    "Varieties distinguished by grain, texture, and added ingredients."
+  ],
+  
+  "UmVzdGF1cmFudCBEaXNoZXM=": [
+    "Menu items ordered at various eateries.",
+    "Popular meals from American diners to international cuisine."
+  ],
+  
+  "RGluZXJ3YXJl": [
+    "Tableware used for serving and eating meals.",
+    "Ceramic and porcelain pieces found in dish cabinets."
+  ],
+  
+  "U2hvcCBUeXBlcw==": [
+    "Commercial establishments where goods and services are sold.",
+    "Retail locations found in neighborhoods and shopping districts."
+  ],
+  
+  "VHlwZXMgb2YgUGFwZXI=": [
+    "Different grades and purposes of this everyday material.",
+    "From office supplies to craft projects and specialized uses."
+  ],
+  
+  "VHlwZXMgb2YgU2hvZXM=": [
+    "Footwear styles for different occasions and activities.",
+    "From casual to formal, athletic to protective."
+  ]
 };
 
 function getCategories() {
