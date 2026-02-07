@@ -862,7 +862,7 @@ return `
  { e:"🍳", k:"food fried egg cooking" },
 { e:"🔪", k:"kitchen knife cooking cut" },
  { e:"🥄", k:"kitchen spoon cooking scoop" },
- { e:"🍽️", k:"food knife fork plate eat" },
+ { e:"🍽️", k:"food knife fork plate eat utensil" },
     
 // 🍝 Food – Meals & Ingredients
 { e:"🍝", k:"food pasta dish spaghetti" },
@@ -899,7 +899,7 @@ return `
 { e:"🍸", k:"drink cocktail martini" },
 { e:"🍹", k:"drink tropical cocktail" },
 { e:"🍷", k:"drink wine glass" },
-{ e:"🍾", k:"drink champagne bottle" },
+{ e:"🍾", k:"drink champagne bottle wine" },
 { e:"🍺", k:"drink beer" },
 { e:"🥃", k:"drink whiskey glass" },
 { e:"🥤", k:"drink pop soft drink soda" },
@@ -936,6 +936,7 @@ return `
 // 🛠️ Tools, Objects & Misc
 { e:"✏️", k:"pencil edit" },
 { e:"📝", k:"note writing memo paper" },
+{ e:"📜", k:"scroll note writing memo paper" },
 { e:"📁", k:"file folder note writing memo paper" },
 { e:"🗓️", k:"calendar paper date memo" },
  { e:"✉️", k:"letter email card memo mail" },
@@ -947,7 +948,9 @@ return `
 { e:"🧶", k:"yarn knitting craft hobby" },
 { e:"🔗", k:"link metal chain infinity clasp" },
 { e:"🃏", k:"card playing joker game" },
-{ e:"⏱️", k:"timer stopwatch" },
+{ e:"⏱️", k:"timer stopwatch clock" },
+ { e:"🧮", k:"math abacus count number" },
+{ e:"#️", k:"math number pound count" },    
 { e:"📦", k:"package box" },
 { e:"🪄", k:"magic wand" },
     { e:"🚀", k:"rocket space" },
