@@ -2295,8 +2295,8 @@ if (willDim && t.id !== sel) {
 } else {
   btn.addEventListener("click", () => onTileClick(t.id));
 
-  // Holding zone drag (board -> holding, board -> board match)
-  if (state.holdingMode && !t.done){
+  // Drag-and-drop: drag a tile onto another to attempt a match
+  if (!t.done){
     btn.draggable = true;
 
     btn.addEventListener("dragstart", (e) => {
@@ -2618,8 +2618,8 @@ if (s.startsWith("<svg")){
     // click = normal tile click
     btn.addEventListener("click", () => onTileClick(t.id));
 
-  // Holding zone drag (board -> holding, board -> board match)
-  if (state.holdingMode && !t.done){
+  // Drag-and-drop: drag a tile onto another to attempt a match
+  if (!t.done){
     btn.draggable = true;
 
     btn.addEventListener("dragstart", (e) => {
