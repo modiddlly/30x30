@@ -1,0 +1,367 @@
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>30x30</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600&display=swap" rel="stylesheet">
+
+  <!-- If you have a CSS file, point this at it. Otherwise keep your inline <style> in this file. -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* --- Help icon (HUD) --- */
+    .iconBtn{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: #fff;
+      box-shadow: var(--btn-shadow);
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .iconBtn:hover{ filter: brightness(0.98); }
+    .iconBtn:active{ transform: translateY(1px); }
+
+    /* --- Left-floating menu explanations (Play 
+    s / New game) --- */
+    .menu--leftDetail .hint-item{ position: relative; }
+    .menu--leftDetail .menu-detail{
+      position: absolute;
+      top: 0;
+      right: 100%;
+      left: auto;
+      margin-right: 12px;
+
+      width: 220px;
+      max-width: min(260px, calc(100vw - 24px));
+      padding: 10px 12px;
+
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: var(--menu-shadow);
+      pointer-events: none;
+      z-index: 220;
+    }
+
+    /* --- Cluster hover tooltip --- */
+    .tip--cluster{
+      position: fixed;
+      max-width: min(320px, calc(100vw - 24px));
+      padding: 10px 12px;
+      border-radius: 14px;
+      box-shadow: var(--menu-shadow);
+      pointer-events: none;
+      z-index: 400;
+      white-space: normal;
+    }
+    .tip--cluster .clusterTip__hdr{
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(0,0,0,.60);
+      margin-bottom: 6px;
+    }
+    .tip--cluster .clusterTip__item{
+      font-size: 13px;
+      line-height: 1.25;
+      padding: 2px 0;
+    }
+
+    /* --- User dim (ignore) --- */
+    .tile.user-dim{
+      opacity: 0.22;
+      filter: grayscale(0.2);
+    }
+    .tile.selected.user-dim{
+      opacity: 1;
+      filter: none;
+    }
+  </style>
+
+</head>
+
+<body>
+  <canvas id="fireworks" aria-hidden="true"></canvas>
+<div id="endOverlay" class="endOverlay" hidden>
+  <div class="endOverlay__card">
+    <div id="endOverlayText" class="endOverlay__text"></div>
+    <button id="endOverlayClose" class="btn" type="button">Close</button>
+  </div>
+</div>
+
+  <div class="hud">
+    <div class="hud__left">
+      <span>Score: <span id="score">0</span></span>
+      <div id="scoreTip" class="tip" hidden></div>
+
+      <span id="mistakesStat">Mistakes: <span id="mistakes">0</span></span>
+      <span>Hints: <span id="hintsUsed">0</span></span>
+      <span>Goal: <span id="goal">600</span></span>
+
+      <!-- optional utility buttons (safe even if JS uses ?. ) -->
+      <button id="deselect" class="btn btn--mini" type="button">Deselect</button>
+</div>
+
+    <div class="hud__right">
+      <div class="hud__rightText">
+        <div class="hud__selectedRow">
+          <span id="selectedLabel" class="hud__selected"></span>
+
+          <!-- stacked mode indicators (only shown when ON) -->
+          <div id="modeStack" class="hud__modes" aria-label="Active modes">
+            <button id="elimPill" class="modePill" type="button" hidden>Elimination: ON</button>
+            <button id="stickyPill" class="modePill" type="button" hidden>Sticky: ON</button>
+            <button id="dimPill" class="modePill" type="button" hidden>Dim brush: ON</button>
+            <button id="dimSelPill" class="modePill" type="button" hidden>Dim selection</button>
+
+          </div>
+        </div>
+
+        <span id="hudMsg" class="hud__msg"></span>
+      </div>
+
+      <div class="hud__rightBtns">
+        <!-- Hints -->
+        <div class="hud__hints">
+          <button id="hintBtn" class="btn" type="button">Hints ▾</button>
+
+          <div id="hintMenu" class="menu menu--wide" hidden>
+  <div class="menu-step menu-step--hintMain">
+ <div class="menu-hdr">Tile hints</div>
+<div class="hint-item">
+      <button class="menu-item" type="button" data-action="helpCat">◆ Gimme a hint</button>
+      <div class="menu-detail" data-for="helpCat" hidden>
+        Highlights 5 options — narrow it down to the one that matches.
+      </div>
+    </div>
+    <div class="hint-item">
+      <button class="menu-item" type="button" data-action="match">◆◆ Gimme a random match</button>
+      <div class="menu-detail" data-for="match" hidden>
+        Reveals a guaranteed match between two random tiles.
+      </div>
+    </div>
+
+   
+    
+    <div class="hint-item">
+      <button class="menu-item" type="button" data-action="tileHome">◆◆◆ Find a home</button>
+      <div class="menu-detail" data-for="tileHome" hidden>
+        Tap a tile and I’ll suggest where it belongs.
+      </div>
+    </div>
+
+    <hr class="menu-sep">
+
+    <!-- Category hints -->
+   
+        <div class="menu-hdr">Category hints</div>
+ <div class="hint-item">
+      <button class="menu-item" type="button" data-action="mergeGroups">Check overlapping categories</button>
+      <div class="menu-detail" data-for="mergeGroups" hidden>
+       Lets you know if any of your piles actually belong together.
+      </div>
+    </div>
+
+    <div class="hint-item">
+      <button class="menu-item" type="button" data-action="small">◆ Small hint</button>
+      <div class="menu-detail" data-for="small" hidden>
+        A subtle nudge toward a correct grouping that hasn't been found yet.
+      </div>
+    </div>
+    
+    <div class="hint-item">
+      <button class="menu-item" type="button" data-action="strong">◆◆ Stronger hint</button>
+      <div class="menu-detail" data-for="strong" hidden>
+        A stronger nudge toward a correct grouping that hasn't been found yet.
+      </div>
+    </div>
+    <div class="hint-item">
+      <button class="menu-item" type="button" data-action="revealNew">◆◆◆ Reveal a missing category</button>
+      <div class="menu-detail" data-for="revealNew" hidden>
+        Reveals one category you haven’t seemed to find yet.
+      </div>
+    </div>
+
+   
+  </div>
+</div>
+        </div>
+          
+        <!-- Shuffle -->
+        <div class="hud__shuffle">
+          <button id="shuffleBtn" class="btn" type="button">Shuffle ▾</button>
+
+        <div id="shuffleMenu" class="menu" hidden>
+  <div class="menu-step menu-step--shuffleMain">
+    <div class="menu-hdr">Shuffle</div>
+
+    <div class="hint-item">
+      <button type="button" data-action="shuffleUnmatched">Shuffle unmatched only</button>
+      <div class="menu-detail" data-for="shuffleUnmatched" hidden>Only shuffles tiles that aren’t in completed groups.</div>
+    </div>
+
+    <div class="hint-item">
+      <button type="button" data-action="shuffleAll">Shuffle all</button>
+      <div class="menu-detail" data-for="shuffleAll" hidden>Shuffles everything, including completed groups.</div>
+    </div>
+
+    <hr class="menu-sep">
+
+    <div class="menu-hdr">Snap</div>
+
+    <div class="hint-item">
+      <button type="button" data-action="groupCompleted">Snap completed groups</button>
+      <div class="menu-detail" data-for="groupCompleted" hidden>Compacts completed groups together.</div>
+    </div>
+
+    <div class="hint-item">
+      <button type="button" data-action="groupIncomplete">Snap incomplete groups</button>
+      <div class="menu-detail" data-for="groupIncomplete" hidden>Compacts in-progress piles without moving completed groups.</div>
+    </div>
+
+    <div class="hint-item">
+      <button type="button" data-action="snapUndimmed">Snap undimmed</button>
+      <div class="menu-detail" data-for="snapUndimmed" hidden>Moves dimmed tiles to the bottom without moving completed groups.</div>
+    </div>
+
+    <hr class="menu-sep">
+<div id="shuffleToolsWrap">
+
+  <div class="menu-hdr">Tools</div>
+
+  <div class="hint-item">
+    <button type="button" data-action="fastSort">Fast sort emojis</button>
+    <div class="menu-detail" data-for="fastSort" hidden>Auto-tries matches between tiles/piles that share the same emoji.</div>
+  </div>
+
+  <hr class="menu-sep">
+</div>
+
+    <div class="menu-hdr">Board</div>
+
+    <div class="hint-item">
+      <button type="button" data-action="boardWidth">Change board width →</button>
+      <div class="menu-detail" data-for="boardWidth" hidden>Switch how many tiles are in each row.</div>
+    </div>
+  </div>
+
+  <div class="menu-step menu-step--boardWidth" hidden>
+    <div class="menu-hdr">Board width</div>
+    <button type="button" data-action="boardWidthBack">← Back</button>
+
+    <hr class="menu-sep">
+
+    <button type="button" data-cols="25">25 tiles</button>
+    <button type="button" data-cols="20">20 tiles</button>
+    <button type="button" data-cols="15">15 tiles</button>
+    <button type="button" data-cols="10">10 tiles</button>
+  </div>
+</div>
+
+        </div>
+
+        <!-- Play modes -->
+        <div class="menuWrap hud__playmodes">
+          <button id="playModesBtn" class="btn" type="button">Play modes ▾</button>
+
+        <div id="playModesMenu" class="menu menu--leftDetail" hidden>
+  <div class="menu-hdr">Play modes</div>
+
+  <div class="hint-item">
+    <label class="menu-row">
+      <input type="checkbox" id="elimToggle">
+      <span>Elimination mode</span>
+    </label>
+    <div class="menu-detail" data-for="elimToggle" hidden>Dims unlikely tiles based on what you’ve already learned.</div>
+  </div>
+
+  <div class="hint-item">
+    <label class="menu-row">
+      <input type="checkbox" id="stickyToggle">
+      <span>Sticky mode</span>
+    </label>
+    <div class="menu-detail" data-for="stickyToggle" hidden>Keeps your selection after a wrong try so you can keep probing.</div>
+  </div>
+          
+          
+  <div class="hint-item">
+    <label class="menu-row">
+      <input type="checkbox" id="dimToggle">
+      <span>Dim brush</span>
+    </label>
+    <div class="menu-detail" data-for="dimToggle" hidden>Click-drag to dim tiles you want to ignore (drag from a dimmed tile to undim).</div>
+  </div>
+
+<div class="hint-item">
+  <label class="menu-row">
+    <input type="checkbox" id="hideEmojiToggle">
+    <span>Hide emojis</span>
+  </label>
+  <div class="menu-detail" data-for="hideEmojiToggle" hidden>Hides emoji markers on tiles.</div>
+</div>
+
+<div class="hint-item">
+  <label class="menu-row">
+    <input type="checkbox" id="holdingToggle">
+    <span>Holding zone</span>
+  </label>
+  <div class="menu-detail" data-for="holdingToggle" hidden>Adds a sticky side column to park tiles for later.</div>
+</div>
+
+</div>
+          
+
+        </div>
+        <!-- New Game -->
+        <div class="hud__newgame">
+          <button id="newGameBtn" class="btn" type="button">New Game ▾</button>
+
+          <div id="newGameMenu" class="menu menu--leftDetail" hidden>
+            <div class="menu-step menu-step--choose">
+              <div class="menu-hdr">Mode</div>
+
+              <div class="hint-item">
+                <button id="modeRegularBtn" type="button" data-mode="regular">Regular</button>
+                <div class="menu-detail" data-for="modeRegularBtn" hidden>Standard scoring + mistakes.</div>
+              </div>
+
+              <div class="hint-item">
+                <button id="modeChillBtn" type="button" data-mode="chill">Chill</button>
+                <div class="menu-detail" data-for="modeChillBtn" hidden>No scoring pressure — explore freely.</div>
+              </div>
+</div>
+
+            <div class="menu-step menu-step--confirm" hidden>
+              <div class="menu-hdr">Start new game?</div>
+              <button id="confirmNewGame" type="button">Yes — start over</button>
+              <button type="button" data-mode="cancel">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <button id="helpBtn" class="iconBtn" type="button" aria-label="How to play" title="How to play">?</button>
+      </div> <!-- /hud__rightBtns -->
+    </div> <!-- /hud__right -->
+  </div> <!-- /hud -->
+
+  <main class="wrap">
+  <div class="playArea">
+    <div id="board" class="board" aria-label="Game board"></div>
+    <div id="clusterTip" class="tip tip--cluster" hidden></div>
+
+    <aside id="holdingZone" class="holding" hidden aria-label="Holding zone">
+      <div class="holding__hdr">
+        <span class="holding__title">Holding</span>
+        <span id="holdingCount" class="holding__count">0 / 5</span>
+      </div>
+      <div id="holdingList" class="holding__list" aria-label="Holding tiles"></div>
+    </aside>
+  </div>
+</main>
+
+
+
+
