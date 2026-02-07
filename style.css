@@ -1384,4 +1384,40 @@ body.dim-on #board{ touch-action: none; }
   margin: 0 auto;
 }
 
+/* ── Drag & Drop mode visuals ── */
 
+.tile-drag-clone{
+  position: fixed;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0.92;
+  transform: rotate(1.5deg) scale(1.05);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+  transition: transform 0.1s ease;
+}
+
+.tile.drag-ghost{
+  opacity: 0.25;
+  border: 2px dashed #aaa !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.tile.drag-ghost *{
+  visibility: hidden;
+}
+
+.tile.drag-match-hover{
+  outline: 2.5px solid #4a90d9;
+  outline-offset: 2px;
+  background-color: #e3eefa !important;
+  transition: outline 0.1s, background-color 0.1s;
+}
+
+.drag-insert-line{
+  position: fixed;
+  width: 3px;
+  background: #4a90d9;
+  border-radius: 2px;
+  z-index: 9999;
+  pointer-events: none;
+}
