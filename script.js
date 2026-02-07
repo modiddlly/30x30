@@ -333,6 +333,8 @@ holdingCount: document.getElementById("holdingCount"),
   stickyPill: document.getElementById("stickyPill"),
 dimToggle: document.getElementById("dimToggle"),
 dimPill: document.getElementById("dimPill"),
+dragDropToggle: document.getElementById("dragDropToggle"),
+dragDropPill: document.getElementById("dragDropPill"),
 dimSelPill: document.getElementById("dimSelPill"),
   hintsUsed: document.getElementById("hintsUsed"),
   hintBtn: document.getElementById("hintBtn"),
@@ -399,6 +401,23 @@ els.stickyPill?.addEventListener("click", (e) => {
   state.dimMode = false;
   if (els.dimToggle) els.dimToggle.checked = false;
   document.body.classList.remove("dim-on");
+  setHUD();
+  save();
+});
+
+els.dragDropToggle?.addEventListener("change", () => {
+  state.dragDropMode = !!els.dragDropToggle.checked;
+  _closeHintMenu_();
+  renderAll();
+  setHUD();
+  save();
+});
+
+els.dragDropPill?.addEventListener("click", (e) => {
+  e.preventDefault(); e.stopPropagation();
+  state.dragDropMode = false;
+  if (els.dragDropToggle) els.dragDropToggle.checked = false;
+  renderAll();
   setHUD();
   save();
 });
@@ -1625,6 +1644,7 @@ mode: state.mode || "regular",
     hintsUsed: state.hintsUsed || 0,
     stickyMode: !!state.stickyMode,
     dimMode: !!state.dimMode,
+    dragDropMode: !!state.dragDropMode,
 
     hideEmojis: !!state.hideEmojis,
     holdingMode: !!state.holdingMode,
@@ -1690,6 +1710,7 @@ if (!Number.isFinite(parsed.boardColsOverride)) parsed.boardColsOverride = null;
 parsed.eliminationMode = !!parsed.eliminationMode;
     parsed.hideEmojis = !!parsed.hideEmojis;
     parsed.dimMode = !!parsed.dimMode;
+    parsed.dragDropMode = !!parsed.dragDropMode;
 
     parsed.holdingMode = !!parsed.holdingMode;
     if (!Array.isArray(parsed.holdingIds)) parsed.holdingIds = [];
@@ -1862,6 +1883,15 @@ if (els.stickyPill){
 if (els.elimPill) els.elimPill.title = "Dims tiles you’ve already tried against the selected tile.";
 if (els.stickyPill) els.stickyPill.title = "Keeps the first tile selected after wrong guesses.";
 
+  // Drag & drop pill
+  const dragDropOn = !!state.dragDropMode;
+
+  if (els.dragDropPill){
+    els.dragDropPill.hidden = !dragDropOn;
+    if (dragDropOn) els.dragDropPill.innerHTML = `Drag & drop: ON <span class="modeX" aria-hidden="true">×</span>`;
+    els.dragDropPill.title = "Drag a tile onto another to attempt a match.";
+  }
+
      // Dim brush pill
   const dimOn = !!state.dimMode;
 
@@ -1893,6 +1923,7 @@ els.dimSelPill.innerHTML = `Dimmed: ${dimmedCount} <span class="modeX" aria-hidd
    
    if (els.elimToggle) els.elimToggle.checked = !!state.eliminationMode;
 if (els.stickyToggle) els.stickyToggle.checked = !!state.stickyMode;
+if (els.dragDropToggle) els.dragDropToggle.checked = !!state.dragDropMode;
 
 
 }
@@ -1947,6 +1978,7 @@ eliminationMode: false,
 hintMode: null,
     stickyMode: false,
     dimMode: false,
+    dragDropMode: false,
     hideEmojis: false,
 holdingMode: false,
 holdingIds: [],
@@ -2411,7 +2443,7 @@ if (willDim && t.id !== sel) {
   btn.addEventListener("click", () => onTileClick(t.id));
 
   // Drag-and-drop: drag a tile onto another to attempt a match
-  if (!t.done){
+  if (state.dragDropMode && !t.done){
     btn.draggable = true;
 
     btn.addEventListener("dragstart", (e) => {
@@ -2734,7 +2766,7 @@ if (s.startsWith("<svg")){
     btn.addEventListener("click", () => onTileClick(t.id));
 
   // Drag-and-drop: drag a tile onto another to attempt a match
-  if (!t.done){
+  if (state.dragDropMode && !t.done){
     btn.draggable = true;
 
     btn.addEventListener("dragstart", (e) => {
