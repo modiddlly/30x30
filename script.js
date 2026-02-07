@@ -899,15 +899,14 @@ return `
 
 // 🎬 Media, Arts & Culture
 { e:"🎬", k:"film movie" },
-    { e:"🎭", k:"theater play drama" },
+{ e:"🎭", k:"theater play drama" },
 { e:"🎥", k:"camera film movie" },
 { e:"📷", k:"camera photography" },
 { e:"📺", k:"television tv" },
-    { e:"💻", k:"computer laptop tech" },
-    
+{ e:"💻", k:"computer laptop tech" }, 
 { e:"🎵", k:"music note" },
 { e:"🎸", k:"guitar instrument music" }, 
-    { e:"🎷", k:"saxophone music instrument" }, 
+{ e:"🎷", k:"saxophone music instrument" }, 
 { e:"🎤", k:"microphone music instrument" }, 
 { e:"🎨", k:"art painting" },
 { e:"📚", k:"books reading" },
@@ -922,7 +921,7 @@ return `
 { e:"🗓️", k:"calendar paper date memo" },
  { e:"✉️", k:"letter email card memo mail" },
 { e:"📬", k:"letter email card memo mailbox" },
-   
+ { e:"🛒", k:"shopping cart store" },
 { e:"🔨", k:"hammer tool" },
  { e: EMOJI_OVEN, k: "oven appliance kitchen bake cook" },
 { e:"🪡", k:"needle sewing craft hobby thread" },
