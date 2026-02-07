@@ -2327,8 +2327,8 @@ if (willDim && t.id !== sel) {
 } else {
   btn.addEventListener("click", () => onTileClick(t.id));
 
-  // Drag-and-drop: drag a tile onto another to attempt a match
-  if (state.dragDropMode && !t.done){
+  // Holding zone drag (board -> holding, board -> board match)
+  if (state.holdingMode && !t.done){
     btn.draggable = true;
 
     btn.addEventListener("dragstart", (e) => {
@@ -2650,8 +2650,8 @@ if (s.startsWith("<svg")){
     // click = normal tile click
     btn.addEventListener("click", () => onTileClick(t.id));
 
-  // Drag-and-drop: drag a tile onto another to attempt a match
-  if (state.dragDropMode && !t.done){
+  // Holding zone drag (board -> holding, board -> board match)
+  if (state.holdingMode && !t.done){
     btn.draggable = true;
 
     btn.addEventListener("dragstart", (e) => {
@@ -4876,6 +4876,225 @@ els.endOverlayClose?.addEventListener("click", () => hideHelpOverlay());
 document.getElementById("endOverlay")?.addEventListener("pointerdown", (e) => {
   if (e.target?.id === "endOverlay") hideHelpOverlay();
 });
+
+// ═══════════════════════════════════════════════════════════
+//  DRAG & DROP MODE — pointer-based tile dragging & reorder
+// ═══════════════════════════════════════════════════════════
+{
+  let _drag = null;
+  let _insertLine = null;
+  const DRAG_THRESHOLD = 5;
+
+  function _getInsertLine(){
+    if (!_insertLine){
+      _insertLine = document.createElement("div");
+      _insertLine.className = "drag-insert-line";
+      document.body.appendChild(_insertLine);
+    }
+    return _insertLine;
+  }
+
+  function _hideInsertLine(){
+    if (_insertLine) _insertLine.style.display = "none";
+  }
+
+  function _showInsertLine(x, top, height){
+    const el = _getInsertLine();
+    el.style.display = "";
+    el.style.left = (x - 1.5) + "px";
+    el.style.top = top + "px";
+    el.style.height = height + "px";
+  }
+
+  function _tileUnder(cx, cy){
+    const clone = _drag?.clone;
+    if (clone) clone.style.visibility = "hidden";
+    const el = document.elementFromPoint(cx, cy);
+    if (clone) clone.style.visibility = "";
+    if (!el) return null;
+    return el.closest(".tile[data-id]");
+  }
+
+  function _insertInfo(cx, cy){
+    const rows = els.board?.querySelectorAll("[data-row]");
+    if (!rows) return null;
+    for (const rowEl of rows){
+      const rr = rowEl.getBoundingClientRect();
+      if (cy < rr.top - 5 || cy > rr.bottom + 5) continue;
+      const tiles = Array.from(rowEl.querySelectorAll(".tile[data-id]"))
+        .filter(t => !t.classList.contains("drag-ghost"));
+      if (!tiles.length) continue;
+      const rowNum = Number(rowEl.dataset.row);
+      for (let i = 0; i < tiles.length; i++){
+        const tr = tiles[i].getBoundingClientRect();
+        if (cx < tr.left + tr.width / 2){
+          return { row: rowNum, index: i, x: tr.left - 5, top: rr.top, height: rr.height, beforeId: tiles[i].dataset.id };
+        }
+      }
+      const last = tiles[tiles.length - 1];
+      const lr = last.getBoundingClientRect();
+      return { row: rowNum, index: tiles.length, x: lr.right + 5, top: rr.top, height: rr.height, beforeId: null };
+    }
+    return null;
+  }
+
+  // --- pointerdown on board ---
+  els.board?.addEventListener("pointerdown", (e) => {
+    if (!state.dragDropMode) return;
+    const tileEl = e.target.closest(".tile[data-id]");
+    if (!tileEl) return;
+    const tileId = tileEl.dataset.id;
+    const t = getTileById(tileId);
+    if (!t || t.done || t.removed) return;
+    if (e.target.closest(".tile-emoji-btn")) return;
+
+    _drag = {
+      tileId,
+      tileEl,
+      startX: e.clientX,
+      startY: e.clientY,
+      clone: null,
+      active: false,
+      matchTarget: null,
+      insertTarget: null,
+      offsetX: 0,
+      offsetY: 0
+    };
+    e.preventDefault();
+  });
+
+  // --- pointermove on document ---
+  document.addEventListener("pointermove", (e) => {
+    if (!_drag) return;
+    const dx = e.clientX - _drag.startX;
+    const dy = e.clientY - _drag.startY;
+
+    if (!_drag.active){
+      if (Math.abs(dx) < DRAG_THRESHOLD && Math.abs(dy) < DRAG_THRESHOLD) return;
+      _drag.active = true;
+
+      const rect = _drag.tileEl.getBoundingClientRect();
+      const clone = _drag.tileEl.cloneNode(true);
+      clone.className = "tile tile-drag-clone";
+      clone.style.width = rect.width + "px";
+      clone.style.height = rect.height + "px";
+      clone.style.left = rect.left + "px";
+      clone.style.top = rect.top + "px";
+      document.body.appendChild(clone);
+      _drag.clone = clone;
+      _drag.offsetX = e.clientX - rect.left;
+      _drag.offsetY = e.clientY - rect.top;
+
+      _drag.tileEl.classList.add("drag-ghost");
+      _drag.tileEl.setAttribute("draggable", "false");
+    }
+
+    _drag.clone.style.left = (e.clientX - _drag.offsetX) + "px";
+    _drag.clone.style.top = (e.clientY - _drag.offsetY) + "px";
+
+    // Clear previous highlights
+    if (_drag.matchTarget){
+      _drag.matchTarget.classList.remove("drag-match-hover");
+      _drag.matchTarget = null;
+    }
+    _hideInsertLine();
+    _drag.insertTarget = null;
+
+    // Detect what's under the cursor
+    const under = _tileUnder(e.clientX, e.clientY);
+    if (under && under.dataset.id !== _drag.tileId && !under.classList.contains("drag-ghost")){
+      const ut = getTileById(under.dataset.id);
+      if (ut && !ut.done){
+        under.classList.add("drag-match-hover");
+        _drag.matchTarget = under;
+      }
+    } else {
+      const ins = _insertInfo(e.clientX, e.clientY);
+      if (ins){
+        _showInsertLine(ins.x, ins.top, ins.height);
+        _drag.insertTarget = ins;
+      }
+    }
+  });
+
+  // --- pointerup on document ---
+  document.addEventListener("pointerup", (e) => {
+    if (!_drag) return;
+    const wasDragging = _drag.active;
+    const dragState = _drag;
+
+    // Clean up visuals
+    if (dragState.clone) dragState.clone.remove();
+    if (dragState.tileEl) dragState.tileEl.classList.remove("drag-ghost");
+    if (dragState.matchTarget) dragState.matchTarget.classList.remove("drag-match-hover");
+    _hideInsertLine();
+    _drag = null;
+
+    if (!wasDragging){
+      // Didn't move enough — let click handler fire normally
+      onTileClick(dragState.tileId);
+      return;
+    }
+
+    // Suppress the click event that fires after pointerup
+    document.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      ev.preventDefault();
+    }, { capture: true, once: true });
+
+    if (dragState.matchTarget){
+      // Drop on tile → attempt match
+      const targetId = dragState.matchTarget.dataset.id;
+      state.selectedId = dragState.tileId;
+      setHUD();
+      document.querySelectorAll("[data-row]").forEach(el => {
+        rerenderRow(Number(el.dataset.row));
+      });
+      onTileClick(String(targetId));
+    } else if (dragState.insertTarget){
+      // Drop between tiles → reorder
+      _ddReorderTile(dragState.tileId, dragState.insertTarget);
+    }
+  });
+
+  function _ddReorderTile(tileId, insertInfo){
+    const t = getTileById(tileId);
+    if (!t) return;
+    const sourceRow = t.row;
+    const targetRow = insertInfo.row;
+
+    // Get tiles in target row excluding the dragged tile
+    const targetRowTiles = state.tiles
+      .filter(x => x.row === targetRow && !x.removed && !x.held && String(x.id) !== String(tileId))
+      .sort((a, b) => (a.col ?? 0) - (b.col ?? 0));
+
+    // Determine insert index
+    let insertIdx = insertInfo.index;
+    if (insertInfo.beforeId){
+      const bi = targetRowTiles.findIndex(x => String(x.id) === String(insertInfo.beforeId));
+      if (bi >= 0) insertIdx = bi;
+    } else {
+      insertIdx = targetRowTiles.length;
+    }
+
+    // Move tile to target row
+    t.row = targetRow;
+    targetRowTiles.splice(insertIdx, 0, t);
+    targetRowTiles.forEach((tile, i) => { tile.col = i; });
+
+    // Compact source row if different
+    if (sourceRow !== targetRow){
+      const sourceRowTiles = state.tiles
+        .filter(x => x.row === sourceRow && !x.removed && !x.held)
+        .sort((a, b) => (a.col ?? 0) - (b.col ?? 0));
+      sourceRowTiles.forEach((tile, i) => { tile.col = i; });
+      rerenderRow(sourceRow);
+    }
+
+    rerenderRow(targetRow);
+    save();
+  }
+}
 
 const loaded = load();
 if (loaded){
