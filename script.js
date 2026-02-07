@@ -4779,12 +4779,9 @@ function _helpOverlayHtml_(){
     <div class="endOverlay__textInner">
       <h2 style="margin:0 0 8px 0;font-size:18px;">How to play</h2>
       <div style="font-size:13px;line-height:1.35;color:rgba(0,0,0,.75);">
-        <div><b>Goal:</b> match every tile into its category.</div>
-        <div style="margin-top:6px;"><b>How:</b> click one tile, then click another you think belongs with it.</div>
-        <div style="margin-top:6px;"><b>Piles:</b> correct matches merge into a pile. Hover a pile (2+) to see what’s inside.</div>
-        <div style="margin-top:6px;"><b>Hints:</b> use the Hints menu if you’re stuck.</div>
-        <div style="margin-top:6px;"><b>Modes:</b> open Play modes for Elimination, Sticky, Dim brush, etc.</div>
-        <div style="margin-top:6px;"><b>New game:</b> pick Regular or Chill from the New Game menu.</div>
+        <div><b>Goal:</b> Make 30 groups of 30 tiles by combining two at a time.</div>
+        <div style="margin-top:6px;"><b>How:</b> Click one tile, then click another you think it belongs with.</div>
+        <div style="margin-top:6px;"><b>Stuck?</b> Use the <b>Hints</b> menu.</div>
       </div>
     </div>
   `;
