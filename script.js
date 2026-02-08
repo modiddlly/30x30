@@ -4928,9 +4928,9 @@ function _helpOverlayHtml_(){
   return `
     <div class="endOverlay__textInner">
       <h2 style="margin:0 0 8px 0;font-size:18px;">How to play</h2>
-      <div style="font-size:13px;line-height:1.35;color:rgba(0,0,0,.75);">
-        <div><b>Goal:</b> Make 30 groups of 30 tiles by combining two at a time.</div>
-        <div style="margin-top:6px;"><b>How:</b> Click one tile, then click another you think it belongs with.</div>
+      <div style="font-size:13px;line-height:2;color:rgba(0,0,0,.75);">
+        <div>Make 30 groups of 30 tiles by combining two at a time.</div>
+        <div style="margin-top:6px;"><b>How:</b> Click one tile, then click another you think it belongs with. Then keep going 899 more times.<br />You can add emojis as you go to help group like tiles and quickly sort groups together. Use the <b>holding zone</b> to save tiles you want to keep handy.</div>
         <div style="margin-top:6px;"><b>Stuck?</b> Use the <b>Hints</b> menu.</div>
       </div>
     </div>
