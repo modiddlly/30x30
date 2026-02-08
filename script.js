@@ -2157,8 +2157,6 @@ async function onTileClick(tileId){
       _pulseMistakes_?.();
     }
 
-    if (prevPair >= 1) showMsg(`Already guessed (x${prevPair + 1}).`);
-
     const aEl = _tileElById_(String(a.id));
     const bEl = _tileElById_(String(t.id));
 
@@ -2176,7 +2174,7 @@ async function onTileClick(tileId){
     // Make the second-picked tile look selected during the wrong-shake
     if (bEl){
       bEl.classList.add("selected");
-    
+
     }
 
     if (!stickyOn){
@@ -2185,6 +2183,8 @@ async function onTileClick(tileId){
     }
 
     _clearHintedPair_?.();
+
+    if (prevPair >= 1) showMsg(`Already guessed (x${prevPair + 1}).`);
 
    setTimeout(() => {
   if (bEl) bEl.classList.remove("selected"); // <-- add this
