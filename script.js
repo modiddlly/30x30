@@ -2364,13 +2364,6 @@ function rerenderRow(r){
   const elimOn = !!state.eliminationMode;
   const triedPairs = state.triedPairs || {};
 
-  console.log("[ELIM] rerenderRow()", {
-    r,
-    elimOn,
-    selectedId: sel,
-    triedPairsCount: Object.keys(triedPairs).length
-  });
-
   for (let i = 0; i < visibleCount; i++){
     const t = rowTiles[i];
     if (!t) continue;
@@ -2394,8 +2387,6 @@ const triedVal = k ? triedPairs[k] : 0;
 const willDim = !!(elimOn && sel && !t.done && t.id !== sel && triedVal);
 
 
-    if (willDim) btn.classList.add("elim-dim");
-
     // User dim (ignore)
    if (t.dim && t.id !== sel) {
   btn.classList.add("user-dim");
@@ -2408,21 +2399,6 @@ if (willDim && t.id !== sel) {
 } else {
   btn.classList.remove("elim-dim");
 }
-
-
-    if (willDim){
-      queueMicrotask(() => {
-        console.log("[ELIM] DOM check", {
-          tId: t.id,
-          hasClass: btn.classList.contains("elim-dim"),
-          className: btn.className
-        });
-      });
-    }
-
-    if (elimOn && sel && t.id !== sel){
-      console.log("[ELIM] tile", { r, tId: t.id, key: k, triedVal, willDim });
-    }
 
     // width (optional)
     btn.style.width = t._w ? `${t._w}px` : "";
@@ -4228,13 +4204,15 @@ async function _fastTryPair_(idA, idB, {  shakeOnWrong = false, visual = true, s
 
     const pKey = pairKey(a.id, b.id);
     state.triedPairs = state.triedPairs || {};
-    state.triedPairs[pKey] = (state.triedPairs[pKey] || 0) + 1;
+    const prevPair = state.triedPairs[pKey] || 0;
+    state.triedPairs[pKey] = prevPair + 1;
+
+    if (prevPair >= 1) showMsg(`Already guessed (x${prevPair + 1}).`);
 
 if (state.mode !== "chill"){
   state.mistakes += 1;
   _pulseMistakes_?.();
 }
-_pulseMistakes_();
 
     if (visual && shakeOnWrong){
   _shakeTileNow_(a.id);
@@ -5291,9 +5269,12 @@ if (loaded){
   state = loaded;
   if (typeof state.dimMode !== "boolean") state.dimMode = false;
 
-  // Ensure triedGroups is an object
+  // Ensure triedGroups and triedPairs are objects
   if (!state.triedGroups || Array.isArray(state.triedGroups) || typeof state.triedGroups !== "object") {
     state.triedGroups = {};
+  }
+  if (!state.triedPairs || Array.isArray(state.triedPairs) || typeof state.triedPairs !== "object") {
+    state.triedPairs = {};
   }
 
   // Ensure every tile has a stable groupId
