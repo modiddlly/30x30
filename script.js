@@ -882,7 +882,10 @@ return `
 { e:"🌶️", k:"chili pepper spice" },
 { e:"🍎", k:"apple fruit" },
 { e:"🍍", k:"pineapple fruit" },
-{ e:"🍇", k:"grapes fruit" },  
+{ e:"🍇", k:"grapes fruit" },
+{ e:"🍓", k:"strawberry berry fruit" },
+{ e:"🫐", k:"blueberry berry fruit" },
+{ e:"🫘", k:"beans legume food" },
 
 // 🍰 Desserts & Sweets
 { e:"🍰", k:"food cake dessert" },
@@ -1742,6 +1745,11 @@ function showMsg(text, { sticky = false } = {}){
     sticky = true;                 // force sticky during fast sort
   }
 
+  // don't let stray clears wipe the narrow-down HUD
+  if (state?.hintMode?.type === "narrowDown" && !text){
+    return;
+  }
+
   els.msg.textContent = text;
 
   clearTimeout(msgTimer);
@@ -1755,6 +1763,7 @@ document.addEventListener("click", () => {
   if (!msgSticky) return;
   if (state?.eliminationMode) return; // keep elim HUD message up
   if (state?.fastSorting) return;     // fast sort simulates clicks; don't clear
+  if (state?.hintMode?.type === "narrowDown") return; // keep narrow-down HUD up
   els.msg.textContent = "";
   msgSticky = false;
 }, true);
@@ -2195,13 +2204,15 @@ async function onTileClick(tileId){
     if (prevPair >= 1) showMsg(`Already guessed (x${prevPair + 1}).`);
 
    setTimeout(() => {
-  if (bEl) bEl.classList.remove("selected"); // <-- add this
+  if (bEl) bEl.classList.remove("selected");
 
   document.querySelectorAll("[data-row]").forEach(el => {
     const r = Number(el.getAttribute("data-row"));
     rerenderRow(r);
   });
   renderHolding?.();
+  // restore narrow-down HUD after rerender
+  if (state.hintMode?.type === "narrowDown") _narrowDownUpdateHud_();
 }, 1200);
 
     save();
@@ -2411,15 +2422,11 @@ if (willDim && t.id !== sel) {
 // Narrow down: preserve pick highlights and dim state across rerenders
 if (state.hintMode?.type === "narrowDown"){
   const ndMode = state.hintMode;
-  if (!ndMode.active && ndMode.selected.includes(String(t.id))){
+  if (ndMode.selected.includes(String(t.id))){
     btn.classList.add("narrow-pick");
   }
   if (ndMode.active){
-    const ndCats = new Set();
-    for (const id of ndMode.selected){
-      const st = getTileById(id);
-      if (st) ndCats.add(st.cat);
-    }
+    const ndCats = ndMode.cats ? new Set(ndMode.cats) : new Set();
     if (!t.done && !ndCats.has(t.cat)){
       btn.classList.add("hint-dim");
     }
@@ -3495,7 +3502,14 @@ document.addEventListener("keydown", (e) => {
 
 
 // ----- narrow down mode
-const NARROW_DOWN_MAX = 5;
+const NARROW_DOWN_MIN = 4;
+const NARROW_DOWN_MAX = 8;
+
+function _narrowDownCost_(n){
+  if (n >= 8) return 3;
+  if (n >= 5) return 4;
+  return 5; // 4 tiles
+}
 
 function _narrowDownArm_(){
   if (state.selectedId) deselect();
@@ -3514,7 +3528,7 @@ function _narrowDownUpdateHud_(){
     showMsg("", { sticky: true });
     const msgEl = els.msg;
     if (msgEl){
-      msgEl.innerHTML = `Narrow down active. <button id="narrowDownClear" class="btn btn--mini" type="button">Clear</button>`;
+      msgEl.innerHTML = `<span class="nd-hud">Narrow down active <button id="narrowDownClear" class="btn btn--mini nd-btn" type="button">Clear</button></span>`;
       document.getElementById("narrowDownClear")?.addEventListener("click", (e) => {
         e.stopPropagation();
         _narrowDownExit_();
@@ -3523,12 +3537,14 @@ function _narrowDownUpdateHud_(){
     return;
   }
 
-  const remaining = NARROW_DOWN_MAX - n;
-  let html = `Narrow down: ${n}/${NARROW_DOWN_MAX} selected`;
+  const cost = _narrowDownCost_(n);
+  const remaining = NARROW_DOWN_MIN - n;
+  let html = `<span class="nd-hud">Narrow down: ${n} selected`;
   if (remaining > 0) html += ` — pick ${remaining} more`;
-  html += ". ";
-  if (n > 0) html += `<button id="narrowDownGo" class="btn btn--mini" type="button">Go</button> `;
-  html += `<button id="narrowDownCancel" class="btn btn--mini" type="button">Cancel</button>`;
+  html += ` (cost: ${cost}) `;
+  if (n >= NARROW_DOWN_MIN) html += `<button id="narrowDownGo" class="btn btn--mini nd-btn nd-go" type="button">Go</button> `;
+  html += `<button id="narrowDownCancel" class="btn btn--mini nd-btn" type="button">Cancel</button>`;
+  html += `</span>`;
 
   showMsg("", { sticky: true });
   const msgEl = els.msg;
@@ -3572,7 +3588,7 @@ function _narrowDownToggleTile_(clickedId){
 
 function _narrowDownActivate_(){
   const mode = state.hintMode;
-  if (!mode || mode.type !== "narrowDown" || mode.selected.length === 0) return;
+  if (!mode || mode.type !== "narrowDown" || mode.selected.length < NARROW_DOWN_MIN) return;
 
   // collect categories of selected tiles
   const cats = new Set();
@@ -3581,10 +3597,7 @@ function _narrowDownActivate_(){
     if (t) cats.add(t.cat);
   }
 
-  // clear yellow highlights from selection phase
-  document.querySelectorAll(".tile.narrow-pick").forEach(el => el.classList.remove("narrow-pick"));
-
-  // dim all tiles NOT in those categories (except done tiles)
+  // dim all tiles NOT in those categories (keep narrow-pick highlights on selected tiles)
   document.querySelectorAll(".tile").forEach(el => {
     const id = String(el.dataset.id || "");
     const t = getTileById(id);
@@ -3594,7 +3607,9 @@ function _narrowDownActivate_(){
   });
 
   mode.active = true;
-  _spendHint_(5);
+  mode.cats = [...cats];
+  const cost = _narrowDownCost_(mode.selected.length);
+  _spendHint_(cost);
   _narrowDownUpdateHud_();
 }
 
