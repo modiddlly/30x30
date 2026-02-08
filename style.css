@@ -26,13 +26,13 @@ body{
   color:#111;
 }
 .wrap{
-  padding: calc(var(--hud-h) + 1px) 8px 12px;
+  padding: calc(var(--hud-h) + 12px) 24px 32px;
   overflow: visible;   /* was auto */
 }
 
 /* only reserve space when holding zone is enabled */
 body.holding-on .wrap{
-  padding-right: calc(var(--holding-w) + 8px);
+  padding-right: calc(var(--holding-w) + 24px);
 }
 
 
@@ -1015,6 +1015,15 @@ background: #fff4b8 !important;   /* soft yellow */
   0%,100%{ transform: translateX(0); }
   25%{ transform: translateX(-2px); }
   75%{ transform: translateX(2px); }
+}
+/* Narrow-down tile picks (yellow highlight, no shake) */
+.tile.narrow-pick{
+  outline: 3px solid gold;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px rgba(255,215,0,.25);
+  background: #fff4b8 !important;
+  border: 2px solid rgba(0,0,0,.25);
+  color: #000 !important;
 }
 .board.elim-on .tile.elim-dim{
   opacity: .25;

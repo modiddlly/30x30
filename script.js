@@ -1913,6 +1913,14 @@ async function onTileClick(tileId){
   }
 
   // --------------------------------------------------
+  // 1b) NARROW DOWN — tile selection phase
+  // --------------------------------------------------
+  if (state.hintMode?.type === "narrowDown" && !state.hintMode.active){
+    _narrowDownToggleTile_(clickedId);
+    return;
+  }
+
+  // --------------------------------------------------
   // 2) HINTED PAIR (GIMME MATCH) — CLICK-AWAY CLEARS
   // --------------------------------------------------
 
@@ -2011,8 +2019,6 @@ async function onTileClick(tileId){
       _pulseMistakes_?.();
     }
 
-    if (prevPair >= 1) showMsg(`Already guessed (x${prevPair + 1}).`);
-
     const aEl = _tileElById_(String(a.id));
     const bEl = _tileElById_(String(t.id));
 
@@ -2030,7 +2036,7 @@ async function onTileClick(tileId){
     // Make the second-picked tile look selected during the wrong-shake
     if (bEl){
       bEl.classList.add("selected");
-    
+
     }
 
     if (!stickyOn){
@@ -2039,6 +2045,8 @@ async function onTileClick(tileId){
     }
 
     _clearHintedPair_?.();
+
+    if (prevPair >= 1) showMsg(`Already guessed (x${prevPair + 1}).`);
 
    setTimeout(() => {
   if (bEl) bEl.classList.remove("selected"); // <-- add this
@@ -2252,6 +2260,24 @@ if (willDim && t.id !== sel) {
   btn.classList.add("elim-dim");
 } else {
   btn.classList.remove("elim-dim");
+}
+
+// Narrow down: preserve pick highlights and dim state across rerenders
+if (state.hintMode?.type === "narrowDown"){
+  const ndMode = state.hintMode;
+  if (!ndMode.active && ndMode.selected.includes(String(t.id))){
+    btn.classList.add("narrow-pick");
+  }
+  if (ndMode.active){
+    const ndCats = new Set();
+    for (const id of ndMode.selected){
+      const st = getTileById(id);
+      if (st) ndCats.add(st.cat);
+    }
+    if (!t.done && !ndCats.has(t.cat)){
+      btn.classList.add("hint-dim");
+    }
+  }
 }
 
     // width (optional)
@@ -3322,8 +3348,125 @@ document.addEventListener("keydown", (e) => {
 
 
 
+// ----- narrow down mode
+const NARROW_DOWN_MAX = 5;
+
+function _narrowDownArm_(){
+  if (state.selectedId) deselect();
+  state.hintMode = { type: "narrowDown", selected: [] };
+  _narrowDownUpdateHud_();
+  renderAll();
+  save();
+}
+
+function _narrowDownUpdateHud_(){
+  const mode = state.hintMode;
+  if (!mode || mode.type !== "narrowDown") return;
+  const n = mode.selected.length;
+
+  if (mode.active){
+    showMsg("", { sticky: true });
+    const msgEl = els.msg;
+    if (msgEl){
+      msgEl.innerHTML = `Narrow down active. <button id="narrowDownClear" class="btn btn--mini" type="button">Clear</button>`;
+      document.getElementById("narrowDownClear")?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        _narrowDownExit_();
+      });
+    }
+    return;
+  }
+
+  const remaining = NARROW_DOWN_MAX - n;
+  let html = `Narrow down: ${n}/${NARROW_DOWN_MAX} selected`;
+  if (remaining > 0) html += ` — pick ${remaining} more`;
+  html += ". ";
+  if (n > 0) html += `<button id="narrowDownGo" class="btn btn--mini" type="button">Go</button> `;
+  html += `<button id="narrowDownCancel" class="btn btn--mini" type="button">Cancel</button>`;
+
+  showMsg("", { sticky: true });
+  const msgEl = els.msg;
+  if (msgEl) msgEl.innerHTML = html;
+
+  document.getElementById("narrowDownGo")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    _narrowDownActivate_();
+  });
+  document.getElementById("narrowDownCancel")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    _narrowDownExit_();
+  });
+}
+
+function _narrowDownToggleTile_(clickedId){
+  const mode = state.hintMode;
+  if (!mode || mode.type !== "narrowDown" || mode.active) return false;
+
+  const t = getTileById(clickedId);
+  if (!t || t.removed || t.done) return false;
+
+  const idx = mode.selected.indexOf(clickedId);
+  if (idx >= 0){
+    mode.selected.splice(idx, 1);
+  } else {
+    if (mode.selected.length >= NARROW_DOWN_MAX) return true;
+    mode.selected.push(clickedId);
+  }
+
+  // apply yellow highlight to selected tiles
+  document.querySelectorAll(".tile").forEach(el => {
+    const id = String(el.dataset.id || "");
+    el.classList.toggle("narrow-pick", mode.selected.includes(id));
+  });
+
+  _narrowDownUpdateHud_();
+  save();
+  return true;
+}
+
+function _narrowDownActivate_(){
+  const mode = state.hintMode;
+  if (!mode || mode.type !== "narrowDown" || mode.selected.length === 0) return;
+
+  // collect categories of selected tiles
+  const cats = new Set();
+  for (const id of mode.selected){
+    const t = getTileById(id);
+    if (t) cats.add(t.cat);
+  }
+
+  // clear yellow highlights from selection phase
+  document.querySelectorAll(".tile.narrow-pick").forEach(el => el.classList.remove("narrow-pick"));
+
+  // dim all tiles NOT in those categories (except done tiles)
+  document.querySelectorAll(".tile").forEach(el => {
+    const id = String(el.dataset.id || "");
+    const t = getTileById(id);
+    if (!t || t.done) return;
+    const inCat = cats.has(t.cat);
+    el.classList.toggle("hint-dim", !inCat);
+  });
+
+  mode.active = true;
+  _spendHint_(5);
+  _narrowDownUpdateHud_();
+}
+
+function _narrowDownExit_(){
+  document.querySelectorAll(".tile.narrow-pick").forEach(el => el.classList.remove("narrow-pick"));
+  document.querySelectorAll(".tile.hint-dim").forEach(el => el.classList.remove("hint-dim"));
+  state.hintMode = null;
+  showMsg("", { sticky: false });
+  renderAll();
+  save();
+}
+
 // ----- targeted hint modes
 function _hintCancel_({ silent = false } = {}){
+  if (state.hintMode?.type === "narrowDown"){
+    _narrowDownExit_();
+    return;
+  }
   state.hintMode = null;
   // also cancel selection to avoid accidental merges
   if (state.selectedId) deselect();
@@ -3651,7 +3794,11 @@ document.addEventListener("click", () => {
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && state.hintMode){
-    _hintCancel_();
+    if (state.hintMode.type === "narrowDown"){
+      _narrowDownExit_();
+    } else {
+      _hintCancel_();
+    }
   }
 });
 
@@ -3684,6 +3831,7 @@ if (btn.classList.contains("is-disabled")){
   _closeHintMenu_();
   
   if (action === "tileHome"){ _hintArmTileHome_(); return; }
+  if (action === "narrowDown"){ _narrowDownArm_(); return; }
 
   if (action === "revealNew"){
   // If no tile selected, arm it and prompt like your other targeted hints
@@ -4796,6 +4944,10 @@ function _wireMenuDetails_(menuEl){
 
   if (!key && node.tagName === "LABEL"){
   key = node.getAttribute("for") || node.htmlFor || "";
+  if (!key){
+    const child = node.querySelector("input[id],select[id]");
+    if (child) key = child.id;
+  }
 }
 
   if (!key) return;
