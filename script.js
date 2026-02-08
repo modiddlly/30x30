@@ -820,10 +820,13 @@ return `
 { e:"🧰", k:"toolbox" },
 { e:"👕", k:"shirt clothes clothing" },
 { e:"🎓", k:"graduation cap" },
+{ e:"👗", k:"dress clothes clothing" },
+    { e:"🧢", k:"hat baseball cap" },
  { e:"🎀", k:"ribbon bow knot" },
     { e:"🧼", k:"soap clean" },
     { e:"🥾", k:"shoe boots" },
 { e:"💄", k:"lipstick makeup" },
+    { e:"💍", k:"diamond gemstone jewelery ring" },
 { e:"💎", k:"diamond gemstone jewelery" },
 { e:"🗳️", k:"ballot box" },
    
