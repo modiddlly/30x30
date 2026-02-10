@@ -944,13 +944,15 @@ function _ensureEmojiPicker_(){
 
   _emojiSearch.addEventListener("input", () => _renderEmojiGrid_(_emojiSearch.value));
 
-  // close when clicking outside (single handler; flex check is correct)
-  document.addEventListener("mousedown", (e) => {
+  // close when clicking outside
+  function _emojiOutsideClose_(e){
     if (!_emojiPop) return;
     if (_emojiPop.style.display !== "flex") return;
     if (e.target.closest(".emoji-pop")) return;
     _closeEmojiPicker_();
-  });
+  }
+  document.addEventListener("mousedown", _emojiOutsideClose_);
+  document.addEventListener("pointerdown", _emojiOutsideClose_);
 
 
   _emojiSearch.addEventListener("keydown", (e) => {
@@ -2279,7 +2281,7 @@ if (willDim && t.id !== sel) {
 // Narrow down: preserve pick highlights and dim state across rerenders
 if (state.hintMode?.type === "narrowDown"){
   const ndMode = state.hintMode;
-  if (ndMode.selected.includes(String(t.id))){
+  if (!ndMode.active && ndMode.selected.includes(String(t.id))){
     btn.classList.add("narrow-pick");
   }
   if (ndMode.active){
@@ -3171,7 +3173,8 @@ els.board?.addEventListener("pointermove", (e) => {
   const id = tileEl.dataset?.id;
   if (!id) return _hideClusterTip_();
 
-  // no tooltip while a tile is selected
+  // no tooltip while emoji picker is open or a tile is selected
+  if (_emojiPop?.style?.display === "flex") return _hideClusterTip_();
   if (state?.selectedId) return _hideClusterTip_();
 
   // only piles (2+) show; but we check inside _showClusterTip_
@@ -3262,14 +3265,17 @@ state._dimLastAction = nextVal ? "dim" : "undim";
 
 
 
-els.board?.addEventListener("pointerdown", (e) => {
+// Dim drag can start from board OR the wrap padding area
+const _dimDragRoot_ = document.querySelector(".wrap") || els.board;
+
+_dimDragRoot_?.addEventListener("pointerdown", (e) => {
   if (!state?.dimMode) return;
 
-  // ✅ If you start on a tile, let normal tile-click/matching happen.
+  // If you start on a tile, let normal tile-click/matching happen.
   if (e.target.closest?.(".tile")) return;
 
   // allow normal UI interactions
-  if (e.target.closest?.(".menu, .hud, .btn, .iconBtn, .modePill")) return;
+  if (e.target.closest?.(".menu, .hud, .btn, .iconBtn, .modePill, .holding, .emoji-pop")) return;
 
   e.preventDefault();
   e.stopPropagation();
@@ -3279,7 +3285,7 @@ els.board?.addEventListener("pointerdown", (e) => {
   _dimRectActive_ = false;
 
   document.body.classList.add("dim-dragging");
-  els.board.setPointerCapture?.(e.pointerId);
+  _dimDragRoot_.setPointerCapture?.(e.pointerId);
 
   m.hidden = false;
   m.style.left = `${_dimRectStart_.x}px`;
@@ -3288,7 +3294,7 @@ els.board?.addEventListener("pointerdown", (e) => {
   m.style.height = "0px";
 });
 
-els.board?.addEventListener("pointermove", (e) => {
+_dimDragRoot_?.addEventListener("pointermove", (e) => {
   if (!state?.dimMode || !_dimRectStart_) return;
 
   const dx = e.clientX - _dimRectStart_.x;
@@ -3308,7 +3314,7 @@ els.board?.addEventListener("pointermove", (e) => {
   m.style.height = `${h}px`;
 });
 
-els.board?.addEventListener("pointerup", (e) => {
+_dimDragRoot_?.addEventListener("pointerup", (e) => {
   if (!state?.dimMode || !_dimRectStart_) return;
 
   e.preventDefault();
@@ -3332,6 +3338,25 @@ els.board?.addEventListener("pointerup", (e) => {
   _dimRectActive_ = false;
   document.body.classList.remove("dim-dragging");
   _hideDimMarquee_();
+});
+
+// Double-tap to dim/undim a tile
+els.board?.addEventListener("dblclick", (e) => {
+  if (!state?.dimMode) return;
+  const tileEl = e.target.closest?.(".tile");
+  if (!tileEl) return;
+  const id = tileEl.dataset?.id;
+  if (!id) return;
+  const t = getTileById(id);
+  if (!t || t.done || t.removed) return;
+  const sel = String(state?.selectedId ?? "");
+  if (sel && String(t.id) === sel) return; // never dim selected
+
+  t.dim = !t.dim;
+  state._dimLastIds = [String(t.id)];
+  state._dimLastAction = t.dim ? "dim" : "undim";
+  renderAll();
+  save();
 });
 
 // Esc clears user dim
@@ -3454,8 +3479,9 @@ function _narrowDownActivate_(){
     if (t) cats.add(t.cat);
   }
 
-  // dim all tiles NOT in those categories (keep narrow-pick highlights on selected tiles)
+  // clear yellow picks, then dim tiles outside selected categories
   document.querySelectorAll(".tile").forEach(el => {
+    el.classList.remove("narrow-pick");
     const id = String(el.dataset.id || "");
     const t = getTileById(id);
     if (!t || t.done) return;
@@ -4573,13 +4599,13 @@ _repackByUnits_(slots, _colsNow_());
 function _doSnapUndimmed_(){
   const ordered = _sortedActive_();
 
-  // lock completed tiles in-place
+  // lock completed AND in-progress piles in-place
   const slots = new Array(ordered.length).fill(null);
   const movable = [];
 
   for (let i = 0; i < ordered.length; i++){
     const t = ordered[i];
-    if (t.done) slots[i] = t;
+    if (t.done || (t.cluster?.length || 1) > 1) slots[i] = t;
     else movable.push(t);
   }
 
