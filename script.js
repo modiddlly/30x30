@@ -2424,7 +2424,7 @@ if (willDim && t.id !== sel) {
 // Narrow down: preserve pick highlights and dim state across rerenders
 if (state.hintMode?.type === "narrowDown"){
   const ndMode = state.hintMode;
-  if (ndMode.selected.includes(String(t.id))){
+  if (!ndMode.active && ndMode.selected.includes(String(t.id))){
     btn.classList.add("narrow-pick");
   }
   if (ndMode.active){
@@ -3622,8 +3622,9 @@ function _narrowDownActivate_(){
     if (t) cats.add(t.cat);
   }
 
-  // dim all tiles NOT in those categories (keep narrow-pick highlights on selected tiles)
+  // clear yellow picks, then dim tiles outside selected categories
   document.querySelectorAll(".tile").forEach(el => {
+    el.classList.remove("narrow-pick");
     const id = String(el.dataset.id || "");
     const t = getTileById(id);
     if (!t || t.done) return;
