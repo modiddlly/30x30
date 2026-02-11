@@ -232,10 +232,13 @@ console.log("[PACKED] categories:", Object.keys(CATEGORIES).length);
 console.log("[PACKED] all lengths ok:", Object.values(CATEGORIES).every(a => a.length === 30));
 console.log("[PACKED] hints ok:", Object.keys(CATEGORIES).every(k => (CATEGORY_HINTS[k] || []).length === 2));
 // Surface bad categories on load so the user sees what's wrong
-for (const [k, v] of Object.entries(CATEGORIES)) {
-  if (!Array.isArray(v) || v.length !== 30) {
-    const name = (() => { try { return atob(k); } catch { return k; } })();
-    console.error(`[CATEGORY ERROR] "${name}" has ${Array.isArray(v) ? v.length : 0} items, expected 30`);
+{
+  const badCats = Object.entries(CATEGORIES)
+    .map(([, v], i) => (!Array.isArray(v) || v.length !== 30) ? { i: i + 1, n: Array.isArray(v) ? v.length : 0 } : null)
+    .filter(Boolean);
+  if (badCats.length) {
+    const lines = badCats.map(b => `  Category #${b.i} has ${b.n} items`).join("\n");
+    console.error(`[CATEGORY ERROR] ${badCats.length} category(s) don't have 30 items:\n${lines}`);
   }
 }
 
@@ -1981,13 +1984,13 @@ if (els.dragDropToggle) els.dragDropToggle.checked = !!state.dragDropMode;
   const tiles = [];
   let idCounter = 1;
 
+  const badCats = [];
+  let catIndex = 0;
   for (const [cat, words] of Object.entries(cats)){
+    catIndex++;
     if (!Array.isArray(words) || words.length !== GROUP_SIZE){
-      const name = (() => { try { return atob(cat); } catch { return cat; } })();
-      const msg = `Category "${name}" has ${Array.isArray(words) ? words.length : 0} items (need ${GROUP_SIZE}).`;
-      console.error("[newGame]", msg);
-      alert(msg);
-      return;
+      badCats.push({ i: catIndex, n: Array.isArray(words) ? words.length : 0 });
+      continue;
     }
     for (const w of words){
       const id = String(idCounter++);
@@ -2001,6 +2004,11 @@ if (els.dragDropToggle) els.dragDropToggle.checked = !!state.dragDropMode;
         done: false,
          });
     }
+  }
+
+  if (badCats.length) {
+    const lines = badCats.map(b => `  • Category #${b.i} has ${b.n} items`).join("\n");
+    alert(`${badCats.length} category(s) need exactly ${GROUP_SIZE} items each:\n${lines}`);
   }
 
   shuffle(tiles);
