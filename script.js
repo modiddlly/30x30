@@ -1066,23 +1066,59 @@ return `
   const cx=32,vb=64,sw=1.8;
   const sk="#5E6672",f1="#E7EAEE",f2="#D7DCE3",bd="#B7BEC8",wn="#2D3A4B",sh="rgba(0,0,0,.12)";
   return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 ${vb} ${vb}"><g fill="none" stroke="none">`
-  +`<ellipse cx="${cx}" cy="58.5" rx="12" ry="2" fill="${sh}"/>`
-  +`<path d="M32 4.5V16.2" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
-  +`<path d="M28.7 16.5C29.4 13.9 30.5 12.4 32 12.4C33.5 12.4 34.6 13.9 35.3 16.5Z" fill="${f2}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
-  +`<path d="M14.2 25.2C17.2 19.2 23 17 32 17C41 17 46.8 19.2 49.8 25.2C46.8 30.4 41 30.8 32 30.4C23 30.8 17.2 30.4 14.2 25.2Z" fill="${f1}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
-  +`<path d="M17.2 26C21 30.4 26 31 32 31.2C38 31 43 30.4 46.8 26" stroke="${bd}" stroke-width="${sw}" stroke-linecap="round"/>`
-  +`<g fill="${wn}" opacity=".9"><circle cx="23" cy="25.5" r="1.1"/><circle cx="27.5" cy="26.8" r="1.1"/><circle cx="32" cy="27.2" r="1.1"/><circle cx="36.5" cy="26.8" r="1.1"/><circle cx="41" cy="25.5" r="1.1"/></g>`
-  +`<path d="M10.2 33.6C14 37 22 37.4 32 37.4C42 37.4 50 37 53.8 33.6C50 32.2 42 32 32 32C22 32 14 32.2 10.2 33.6Z" fill="${f2}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
-  +`<path d="M28.6 30.4C29.4 37 30.4 48.6 30.8 48.6H33.2C33.6 48.6 34.6 37 35.4 30.4Z" fill="${f2}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
-  +`<path d="M30.4 35V47.2" stroke="${bd}" stroke-width="${sw}" stroke-linecap="round"/>`
-  +`<path d="M29.2 47.8L20.4 58" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
-  +`<path d="M34.8 47.8L43.6 58" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
-  +`<path d="M32 48.6V58" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
-  +`<path d="M18.6 58H25.4" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
-  +`<path d="M38.6 58H45.4" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
-  +`<path d="M29 58H35" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  // shadow
+  +`<ellipse cx="${cx}" cy="58.7" rx="11.5" ry="2" fill="${sh}"/>`
+  // antenna
+  +`<path d="M32 4.2V14.4" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  // small top cap (more “needle”)
+  +`<path d="M30.4 14.6L32 12.6L33.6 14.6V18.2H30.4Z" fill="${f2}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
+  // saucer (more Space Needle silhouette: sharp-ish roof, flatter belly)
+  +`<path d="M12.8 25.2
+            C15.8 19.2 23.2 16.8 32 16.8
+            C40.8 16.8 48.2 19.2 51.2 25.2
+            C47.2 29.4 40.4 31.4 32 31.4
+            C23.6 31.4 16.8 29.4 12.8 25.2Z"
+        fill="${f1}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
+  // saucer band
+  +`<path d="M16.2 26.0C20.4 29.6 26.0 30.6 32 30.8C38.0 30.6 43.6 29.6 47.8 26.0"
+        stroke="${bd}" stroke-width="${sw}" stroke-linecap="round"/>`
+  // windows (slightly higher, tighter like the real ring)
+  +`<g fill="${wn}" opacity=".9">
+      <circle cx="22.2" cy="25.4" r="1.05"/>
+      <circle cx="26.8" cy="26.6" r="1.05"/>
+      <circle cx="32"   cy="27.0" r="1.05"/>
+      <circle cx="37.2" cy="26.6" r="1.05"/>
+      <circle cx="41.8" cy="25.4" r="1.05"/>
+    </g>`
+  // underside lip (smaller + tucked in)
+  +`<path d="M13.6 33.2
+            C18.2 36.4 24.8 37.6 32 37.6
+            C39.2 37.6 45.8 36.4 50.4 33.2
+            C45.6 31.2 39.2 30.4 32 30.4
+            C24.8 30.4 18.4 31.2 13.6 33.2Z"
+        fill="${f2}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
+  // central shaft (taller + more tapered)
+  +`<path d="M29.7 31.0
+            C30.7 38.0 31.3 49.2 31.6 49.2
+            H32.4
+            C32.7 49.2 33.3 38.0 34.3 31.0Z"
+        fill="${f2}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
+  // elevator stripe
+  +`<path d="M31.2 36.0V47.8" stroke="${bd}" stroke-width="${sw}" stroke-linecap="round"/>`
+  // legs (more iconic: steeper splay + inner braces)
+  +`<path d="M30.6 47.6L22.0 58.0" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M33.4 47.6L42.0 58.0" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M32 49.2V58.0" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  // inner braces
+  +`<path d="M26.8 52.0L28.2 47.8" stroke="${bd}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M37.2 52.0L35.8 47.8" stroke="${bd}" stroke-width="${sw}" stroke-linecap="round"/>`
+  // feet
+  +`<path d="M19.8 58.0H25.8" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M38.2 58.0H44.2" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M29.4 58.0H34.6" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
   +`</g></svg>`;
   })(), k:"space needle seattle tower landmark" }
+
 ]
 
 let _emojiPop = null;
