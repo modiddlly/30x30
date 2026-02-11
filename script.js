@@ -231,6 +231,13 @@ function getCategories() {
 console.log("[PACKED] categories:", Object.keys(CATEGORIES).length);
 console.log("[PACKED] all lengths ok:", Object.values(CATEGORIES).every(a => a.length === 30));
 console.log("[PACKED] hints ok:", Object.keys(CATEGORIES).every(k => (CATEGORY_HINTS[k] || []).length === 2));
+// Surface bad categories on load so the user sees what's wrong
+for (const [k, v] of Object.entries(CATEGORIES)) {
+  if (!Array.isArray(v) || v.length !== 30) {
+    const name = (() => { try { return atob(k); } catch { return k; } })();
+    console.error(`[CATEGORY ERROR] "${name}" has ${Array.isArray(v) ? v.length : 0} items, expected 30`);
+  }
+}
 
 
 // Utility to decode and access the full pack:
@@ -1976,7 +1983,11 @@ if (els.dragDropToggle) els.dragDropToggle.checked = !!state.dragDropMode;
 
   for (const [cat, words] of Object.entries(cats)){
     if (!Array.isArray(words) || words.length !== GROUP_SIZE){
-      throw new Error("Bad category data shape.");
+      const name = (() => { try { return atob(cat); } catch { return cat; } })();
+      const msg = `Category "${name}" has ${Array.isArray(words) ? words.length : 0} items (need ${GROUP_SIZE}).`;
+      console.error("[newGame]", msg);
+      alert(msg);
+      return;
     }
     for (const w of words){
       const id = String(idCounter++);
