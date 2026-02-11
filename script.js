@@ -9,8 +9,6 @@
 // Category names are base64 encoded to prevent spoilers
 // Usage: const categories = getCategories();
 
-Copy
-
 const CATEGORIES = {
   "TW92aWUgVHJvcGVz": ["Meet-cute", "MacGuffin", "Red herring", "Chekhov's gun", "Deus ex machina", "Breaking the fourth wall", "Unreliable narrator", "Love triangle", "Chosen one", "Mentor dies", "Training montage", "Fake-out death", "Love at first sight", "Enemies to lovers", "Fish out of water", "Manic pixie dream girl", "The heist", "Road trip", "Damsel in distress", "Antihero", "Plot armor", "Flashback", "Time loop", "The reveal", "Double cross", "Redemption arc", "Found family", "Slow burn", "Will they won't they", "Cliffhanger"],
   
