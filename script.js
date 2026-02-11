@@ -8,217 +8,220 @@
 // 30×30 Tile Matching Game - Complete Content Pack
 // Category names are base64 encoded to prevent spoilers
 // Usage: const categories = getCategories();
+
+Copy
+
 const CATEGORIES = {
   "TW92aWUgVHJvcGVz": ["Meet-cute", "MacGuffin", "Red herring", "Chekhov's gun", "Deus ex machina", "Breaking the fourth wall", "Unreliable narrator", "Love triangle", "Chosen one", "Mentor dies", "Training montage", "Fake-out death", "Love at first sight", "Enemies to lovers", "Fish out of water", "Manic pixie dream girl", "The heist", "Road trip", "Damsel in distress", "Antihero", "Plot armor", "Flashback", "Time loop", "The reveal", "Double cross", "Redemption arc", "Found family", "Slow burn", "Will they won't they", "Cliffhanger"],
   
-  "Q29va2luZyBNaXN0YWtlcw==": ["Overmixing batter", "Crowding the pan", "Not reading the recipe", "Skipping mise en place", "Using dull knives", "Not preheating", "Opening the oven too early", "Overcooking garlic", "Adding salt too late", "Not resting meat", "Boiling instead of simmering", "Not tempering eggs", "Forgetting to bloom gelatin", "Using cold butter", "Not deglazing", "Overworking dough", "Wrong pan size", "Not tasting as you go", "Adding dairy to acidic sauce", "Drowning pasta in water", "Not drying ingredients", "Flipping too early", "Cooking from cold", "Using the wrong oil", "Not seasoning properly", "Rushing the browning", "Skipping the sear", "Wrong heat level", "Not letting rise enough", "Mixing hot and cold"],
+  "V2luZXM=": ["Chardonnay", "Cabernet Sauvignon", "Merlot", "Pinot Noir", "Sauvignon Blanc", "Riesling", "Malbec", "Zinfandel", "Syrah", "Pinot Grigio", "Chianti", "Bordeaux", "Burgundy", "Champagne", "Prosecco", "Cava", "Rioja", "Barolo", "Sancerre", "Chablis", "Amarone", "Tempranillo", "Grenache", "Sangiovese", "Montepulciano", "Moscato", "Albariño", "Grüner Veltliner", "Viognier", "Gewürztraminer"],
   
-  "QmFzZWJhbGwgU2l0dWF0aW9ucw==": ["Bases loaded", "Full count", "Sacrifice fly", "Stolen base", "Double play", "Triple play", "Intentional walk", "Hit and run", "Bunt", "Squeeze play", "Pickoff", "Caught stealing", "Wild pitch", "Passed ball", "Balk", "Ground rule double", "Inside the park homer", "Walk-off", "Save situation", "Tag up", "Force out", "Fielder's choice", "Infield fly", "Appeal play", "Hidden ball trick", "Rundown", "Checked swing", "Hit by pitch", "Interference", "Obstruction"],
+  "Q2hlZXNlIFZhcmlldGllcw==": ["Cheddar", "Brie", "Gouda", "Mozzarella", "Parmesan", "Feta", "Blue cheese", "Camembert", "Swiss", "Provolone", "Gruyère", "Manchego", "Havarti", "Ricotta", "Goat cheese", "Pecorino", "Gorgonzola", "Monterey Jack", "Fontina", "Asiago", "Muenster", "Roquefort", "Halloumi", "Paneer", "Cotija", "Queso fresco", "Boursin", "Taleggio", "Comté", "Stilton"],
+  
+  "Q29ja3RhaWxz": ["Margarita", "Martini", "Manhattan", "Old fashioned", "Negroni", "Mojito", "Daiquiri", "Whiskey sour", "Cosmopolitan", "Gin and tonic", "Moscow mule", "Mai tai", "Bloody mary", "Piña colada", "Aperol spritz", "Espresso martini", "French 75", "Boulevardier", "Sidecar", "Tom Collins", "Sazerac", "Last word", "Aviation", "Gimlet", "Mint julep", "Dark and stormy", "Caipirinha", "Paloma", "Pisco sour", "Penicillin"],
+  
+  "Q29va2luZyBUZWNobmlxdWVz": ["Sauté", "Braise", "Roast", "Grill", "Poach", "Blanch", "Steam", "Broil", "Bake", "Fry", "Deep fry", "Pan fry", "Simmer", "Boil", "Sear", "Caramelize", "Deglaze", "Emulsify", "Fold", "Julienne", "Chiffonade", "Brunoise", "Confit", "Sous vide", "Flambé", "Reduce", "Temper", "Cure", "Smoke", "Pickle"],
   
   "UGxhbnQgU3RyZXNzIFNpZ25hbHM=": ["Leggy seedlings", "Leaf curl", "Yellowing leaves", "Brown tips", "Wilting", "Leaf drop", "Stretching", "Blossom end rot", "Powdery mildew", "Damping off", "Root rot", "Edema", "Sunscald", "Bolting", "Etiolation", "Chlorosis", "Stunted growth", "Leaf spots", "Crispy edges", "Drooping", "Pale new growth", "Black tips", "Translucent leaves", "Mushy stems", "Slow growth", "No flowers", "Premature fruiting", "Leaf bleaching", "Sticky residue", "Webbing"],
   
-  "U2VhdHRsZSBOZWlnaGJvcmhvb2Rz": ["Ballard", "Fremont", "Capitol Hill", "Queen Anne", "Wallingford", "Green Lake", "Ravenna", "University District", "Magnolia", "Phinney Ridge", "Greenwood", "Crown Hill", "Beacon Hill", "Columbia City", "Georgetown", "SoDo", "Pioneer Square", "Belltown", "South Lake Union", "Eastlake", "Madison Park", "Madrona", "Central District", "Leschi", "Mount Baker", "Seward Park", "Rainier Valley", "Northgate", "Lake City", "West Seattle"],
+  "Rmxvd2Vycw==": ["Rose", "Tulip", "Sunflower", "Daisy", "Lily", "Orchid", "Carnation", "Peony", "Dahlia", "Iris", "Daffodil", "Chrysanthemum", "Hydrangea", "Azalea", "Gardenia", "Wisteria", "Hibiscus", "Jasmine", "Lavender", "Marigold", "Poppy", "Zinnia", "Snapdragon", "Begonia", "Camellia", "Freesia", "Anemone", "Ranunculus", "Delphinium", "Petunia"],
   
-  "VGhlIEJlYXIgVGVybXM=": ["Yes chef", "Heard", "Corner", "Behind", "Hands", "Expo", "The pass", "Garde manger", "All day", "On the fly", "In the weeds", "Eighty-six", "Fire", "Dying on the pass", "Pick up", "Working clean", "Family meal", "Covers", "Deuce", "Four top", "Camper", "Kill it", "Tickets", "The rail", "Pushing", "Dragging", "Mise", "Station", "Brigade", "Service"],
+  "VHJlZXM=": ["Oak", "Pine", "Maple", "Birch", "Willow", "Cedar", "Spruce", "Elm", "Ash", "Beech", "Fir", "Redwood", "Sequoia", "Cypress", "Hickory", "Walnut", "Cherry", "Aspen", "Sycamore", "Poplar", "Hawthorn", "Dogwood", "Chestnut", "Alder", "Juniper", "Larch", "Hemlock", "Cottonwood", "Sassafras", "Buckeye"],
   
-  "Q2F0IEJlaGF2aW9y": ["Slow blink", "Kneading", "Head bunting", "Chattering", "Loaf position", "Zoomies", "Tail puffing", "Airplane ears", "Making biscuits", "Trilling", "Bunny kicks", "Belly up", "Purring", "Hissing", "Grooming", "Scratching post", "Hiding", "Stalking", "Pouncing", "Meowing at door", "Knocking things over", "Midnight crazies", "Bringing prey", "Scent marking", "Whisker stress", "Dilated pupils", "Slow tail swish", "Chirping at birds", "Rolling over", "Head pressing"],
+  "QmlyZHM=": ["Robin", "Cardinal", "Blue jay", "Sparrow", "Eagle", "Hawk", "Owl", "Crow", "Raven", "Woodpecker", "Hummingbird", "Finch", "Swallow", "Wren", "Mockingbird", "Warbler", "Thrush", "Chickadee", "Nuthatch", "Starling", "Oriole", "Tanager", "Grosbeak", "Bunting", "Kingfisher", "Heron", "Egret", "Pelican", "Cormorant", "Loon"],
   
-  "R0JCTyBDaGFsbGVuZ2Vz": ["Choux pastry", "Laminated dough", "Meringue", "Genoise", "Suet pastry", "Puff pastry", "Shortcrust", "Fondant fancies", "Dacquoise", "Religieuse", "Paris-Brest", "Savarin", "Charlotte russe", "Baked alaska", "Profiteroles", "Mille-feuille", "Gateau", "Roulade", "Entremet", "Frangipane", "Kouign-amann", "Tarte tatin", "Sachertorte", "Battenberg", "Victoria sponge", "Florentines", "Macarons", "Eclairs", "Baklava", "Opera cake"],
+  "TW91bnRhaW5z": ["Everest", "Kilimanjaro", "Denali", "Matterhorn", "Fuji", "Rainier", "Whitney", "Hood", "Shasta", "Blanc", "Elbrus", "Aconcagua", "Vinson", "Kosciuszko", "Puncak Jaya", "Logan", "McKinley", "Chimborazo", "Ararat", "Olympus", "Sinai", "Vesuvius", "Etna", "Krakatoa", "Popocatépetl", "Cotopaxi", "Mauna Kea", "Mauna Loa", "Haleakalā", "Rushmore"],
   
-  "Q29nbml0aXZlIEJpYXNlcw==": ["Confirmation bias", "Anchoring", "Availability heuristic", "Dunning-Kruger effect", "Survivorship bias", "Recency bias", "Hindsight bias", "Sunk cost fallacy", "Bandwagon effect", "Halo effect", "Horn effect", "Status quo bias", "Framing effect", "Negativity bias", "Optimism bias", "Dunning-Kruger", "Fundamental attribution error", "Self-serving bias", "Outcome bias", "Availability cascade", "Choice-supportive bias", "Clustering illusion", "Decoy effect", "Endowment effect", "Mere exposure effect", "Normalcy bias", "Planning fallacy", "Projection bias", "Selective perception", "Zero-risk bias"],
+  "Uml2ZXJz": ["Amazon", "Nile", "Mississippi", "Yangtze", "Ganges", "Danube", "Rhine", "Thames", "Seine", "Volga", "Congo", "Niger", "Zambezi", "Mekong", "Tigris", "Euphrates", "Jordan", "Hudson", "Colorado", "Columbia", "Missouri", "Ohio", "Potomac", "Rio Grande", "Yukon", "Snake", "Sacramento", "Allegheny", "Cumberland", "Susquehanna"],
   
-  "R2FyZGVuaW5nIFRhc2tz": ["Hardening off", "Deadheading", "Pinching back", "Succession planting", "Thinning seedlings", "Hill up", "Top dressing", "Side dressing", "Vernalization", "Pricking out", "Heeling in", "Mulching", "Staking", "Trellising", "Transplanting", "Direct sowing", "Stratification", "Scarification", "Damping", "Dividing", "Layering", "Air layering", "Bottom watering", "Foliar feeding", "Amending soil", "Sheet mulching", "Crop rotation", "Companion planting", "Succession sowing", "Hilling"],
+  "Q29nbml0aXZlIEJpYXNlcw==": ["Confirmation bias", "Anchoring", "Availability heuristic", "Dunning-Kruger effect", "Survivorship bias", "Recency bias", "Hindsight bias", "Sunk cost fallacy", "Bandwagon effect", "Halo effect", "Horn effect", "Status quo bias", "Framing effect", "Negativity bias", "Optimism bias", "Authority bias", "Fundamental attribution error", "Self-serving bias", "Outcome bias", "Availability cascade", "Choice-supportive bias", "Clustering illusion", "Decoy effect", "Endowment effect", "Mere exposure effect", "Normalcy bias", "Planning fallacy", "Projection bias", "Selective perception", "Zero-risk bias"],
   
-  "SVRhbGlhbiBQYXN0YSBEaXNoZXM=": ["Cacio e pepe", "Carbonara", "Amatriciana", "Puttanesca", "Aglio e olio", "Bolognese", "Arrabbiata", "Primavera", "Alfredo", "Marinara", "Pomodoro", "Norma", "Genovese", "Vongole", "Pesto", "Gricia", "Matriciana", "Napoletana", "Vodka sauce", "Fra diavolo", "Alle vongole", "Con le sarde", "Alle melanzane", "Ai funghi", "Al limone", "Alla boscaiola", "Alla norcina", "All'ortolana", "Alla checca", "Alla sorrentina"],
+  "RmFtb3VzIE5vdmVsaXN0cw==": ["Jane Austen", "Charles Dickens", "Mark Twain", "Ernest Hemingway", "F. Scott Fitzgerald", "Virginia Woolf", "James Joyce", "George Orwell", "Gabriel García Márquez", "Toni Morrison", "Maya Angelou", "Harper Lee", "J.K. Rowling", "Stephen King", "Margaret Atwood", "Salman Rushdie", "Kazuo Ishiguro", "Haruki Murakami", "Isabel Allende", "Chinua Achebe", "Wole Soyinka", "Alice Walker", "Zadie Smith", "Chimamanda Ngozi Adichie", "Jhumpa Lahiri", "Arundhati Roy", "Khaled Hosseini", "Yaa Gyasi", "Celeste Ng", "Min Jin Lee"],
   
-  "RnJlbmNoIENvb2tpbmcgVGVybXM=": ["Mise en place", "Julienne", "Brunoise", "Chiffonade", "Mirepoix", "Bain-marie", "Deglaze", "Roux", "Bouquet garni", "Au gratin", "En papillote", "Confit", "Sauté", "Flambé", "Blanch", "Consommé", "Velouté", "Béchamel", "Espagnole", "Hollandaise", "Reduction", "Emulsion", "Fond", "Jus", "Coulis", "Beurre blanc", "Clarify", "Poach", "Braise", "Temper"],
+  "RmFtb3VzIFBhaW50ZXJz": ["Leonardo da Vinci", "Vincent van Gogh", "Pablo Picasso", "Claude Monet", "Rembrandt", "Michelangelo", "Frida Kahlo", "Salvador Dalí", "Andy Warhol", "Jackson Pollock", "Georgia O'Keeffe", "Edvard Munch", "Gustav Klimt", "Henri Matisse", "Paul Cézanne", "Édouard Manet", "Edgar Degas", "Pierre-Auguste Renoir", "Johannes Vermeer", "Caravaggio", "Raphael", "Titian", "El Greco", "Diego Velázquez", "Francisco Goya", "J.M.W. Turner", "John Constable", "Winslow Homer", "Edward Hopper", "Banksy"],
   
-  "U1ZVIEVwaXNvZGUgVHlwZXM=": ["Ripped from headlines", "Undercover operation", "Wrongful conviction", "Celebrity case", "Cold case", "Serial predator", "Child victim", "College campus", "Online predator", "Hostage situation", "Courtroom drama", "Witness protection", "False accusation", "Copycat crime", "Partner betrayal", "Personal vendetta", "Missing person", "DNA evidence", "Plea bargain", "Mistrial", "Psychiatric defense", "Revenge plot", "Cover-up", "Political scandal", "Media circus", "Vigilante justice", "Cult", "Human trafficking", "Witness intimidation", "Jury tampering"],
+  "Q29tcG9zZXJz": ["Mozart", "Beethoven", "Bach", "Chopin", "Tchaikovsky", "Vivaldi", "Brahms", "Handel", "Debussy", "Schubert", "Schumann", "Liszt", "Wagner", "Verdi", "Puccini", "Mahler", "Rachmaninoff", "Stravinsky", "Prokofiev", "Shostakovich", "Copland", "Bernstein", "Gershwin", "Satie", "Ravel", "Saint-Saëns", "Dvořák", "Grieg", "Sibelius", "Elgar"],
   
-  "TmV3IEVuZ2xhbmQgVGhpbmdz": ["Rotary", "Dunkin", "Grinder", "Packie", "Wicked", "The T", "The Pike", "Cape traffic", "Dunks run", "Town common", "Nor'easter", "Leaf peeping", "Sugar shack", "Town meeting", "Selectmen", "The Cape", "Fenway", "Harvard Square", "Clam shack", "Lobster roll", "Fluffernutter", "Frappe", "Tonic", "Jimmies", "Bubbler", "Bang a U-ey", "Triple-decker", "Shore dinner", "Indian summer", "Moxie"],
+  "U2hha2VzcGVhcmUgUGxheXM=": ["Hamlet", "Macbeth", "Romeo and Juliet", "Othello", "King Lear", "A Midsummer Night's Dream", "The Tempest", "Julius Caesar", "Twelfth Night", "Much Ado About Nothing", "As You Like It", "The Merchant of Venice", "Richard III", "Henry V", "Antony and Cleopatra", "The Taming of the Shrew", "Measure for Measure", "Coriolanus", "The Winter's Tale", "Cymbeline", "Timon of Athens", "Pericles", "Troilus and Cressida", "All's Well That Ends Well", "Love's Labour's Lost", "The Two Gentlemen of Verona", "The Comedy of Errors", "Titus Andronicus", "Henry IV Part 1", "Richard II"],
   
-  "V2FzaGluZ3RvbiBEQyBUaGluZ3M=": ["The Metro", "The Mall", "The Beltway", "Smithsonian", "Pentagon", "The Hill", "G-town", "Dupont Circle", "Adams Morgan", "U Street", "Columbia Heights", "Shaw", "Navy Yard", "H Street", "Logan Circle", "Foggy Bottom", "Eastern Market", "Ben's Chili Bowl", "Cherry blossoms", "Marine One", "The Wharf", "Union Station", "Tidal Basin", "The Exorcist steps", "The Portrait Gallery", "Kennedy Center", "National Cathedral", "Rock Creek Park", "The Watergate", "Archives"],
+  "QmVhdGxlcyBTb25ncw==": ["Hey Jude", "Let It Be", "Yesterday", "Come Together", "Here Comes the Sun", "Twist and Shout", "Help!", "A Hard Day's Night", "I Want to Hold Your Hand", "She Loves You", "Get Back", "Something", "Penny Lane", "Strawberry Fields Forever", "Eleanor Rigby", "Lucy in the Sky with Diamonds", "All You Need Is Love", "Revolution", "While My Guitar Gently Weeps", "Blackbird", "Norwegian Wood", "In My Life", "The Long and Winding Road", "Ob-La-Di Ob-La-Da", "Eight Days a Week", "Ticket to Ride", "Drive My Car", "Paperback Writer", "Yellow Submarine", "With a Little Help from My Friends"],
   
-  "S2l0Y2hlbiBUZXh0dXJlcw==": ["Crispy", "Creamy", "Flaky", "Tender", "Chewy", "Crunchy", "Silky", "Velvety", "Airy", "Dense", "Moist", "Crumbly", "Fluffy", "Sticky", "Gooey", "Crisp-tender", "Al dente", "Caramelized", "Charred", "Jammy", "Custardy", "Gelatinous", "Springy", "Firm", "Soft", "Buttery", "Fudgy", "Light", "Rich", "Glossy"],
+  "RGlzbmV5IE1vdmllcw==": ["The Lion King", "Frozen", "Aladdin", "Beauty and the Beast", "Moana", "Tangled", "Cinderella", "The Little Mermaid", "Pocahontas", "Mulan", "Hercules", "Tarzan", "The Jungle Book", "Bambi", "Dumbo", "Pinocchio", "Snow White", "Sleeping Beauty", "Peter Pan", "Lady and the Tramp", "101 Dalmatians", "The Aristocats", "Robin Hood", "The Sword in the Stone", "Fantasia", "Alice in Wonderland", "Finding Nemo", "Toy Story", "Monsters Inc", "Up"],
+  
+  "VFYgU2hvd3M=": ["Friends", "Seinfeld", "The Office", "Breaking Bad", "Game of Thrones", "The Sopranos", "The Wire", "Mad Men", "Lost", "Twin Peaks", "Stranger Things", "The Crown", "Succession", "Fleabag", "Sherlock", "Doctor Who", "Black Mirror", "Fargo", "True Detective", "Westworld", "The Mandalorian", "Arrested Development", "Parks and Recreation", "30 Rock", "Community", "The Good Place", "Schitt's Creek", "Ted Lasso", "Cheers", "M*A*S*H"],
   
   "UGFya3MgYW5kIFJlYyBDaGFyYWN0ZXJz": ["Leslie Knope", "Ron Swanson", "April Ludgate", "Andy Dwyer", "Tom Haverford", "Ben Wyatt", "Ann Perkins", "Chris Traeger", "Donna Meagle", "Jerry Gergich", "Jean-Ralphio", "Craig Middlebrooks", "Tammy Two", "Bobby Newport", "Councilman Jamm", "Mark Brendanawicz", "Shauna Malwae-Tweep", "Perd Hapley", "Joan Callamezzo", "Ken Hotate", "Ethel Beavers", "Barney Varmn", "Orin", "The Douche", "Typhoon", "Mona-Lisa", "Tammy One", "Brandi Maxxxx", "Dennis Feinstein", "Jessica Wicks"],
   
-  "VGhlIE9mZmljZSBDaGFyYWN0ZXJz": ["Michael Scott", "Jim Halpert", "Pam Beesly", "Dwight Schrute", "Ryan Howard", "Andy Bernard", "Angela Martin", "Kevin Malone", "Oscar Martinez", "Stanley Hudson", "Phyllis Vance", "Meredith Palmer", "Creed Bratton", "Toby Flenderson", "Kelly Kapoor", "Darryl Philbin", "Erin Hannon", "Gabe Lewis", "Robert California", "Nellie Bertram", "Pete Miller", "Clark Green", "Jan Levinson", "David Wallace", "Holly Flax", "Charles Miner", "Deangelo Vickers", "Jo Bennett", "Todd Packer", "Nate"],
+  "RmlsbSBEaXJlY3RvcnM=": ["Steven Spielberg", "Martin Scorsese", "Quentin Tarantino", "Christopher Nolan", "Stanley Kubrick", "Alfred Hitchcock", "Francis Ford Coppola", "Ridley Scott", "James Cameron", "Peter Jackson", "Guillermo del Toro", "Wes Anderson", "David Fincher", "Paul Thomas Anderson", "Coen Brothers", "Denis Villeneuve", "Spike Lee", "Sofia Coppola", "Greta Gerwig", "Ava DuVernay", "Bong Joon-ho", "Akira Kurosawa", "Hayao Miyazaki", "Pedro Almodóvar", "Wong Kar-wai", "Ang Lee", "Alfonso Cuarón", "Alejandro González Iñárritu", "Kathryn Bigelow", "Jane Campion"],
   
-  "VFYgSm9icw==": ["Showrunner", "Script supervisor", "Best boy", "Gaffer", "Key grip", "Boom operator", "Continuity", "Casting director", "Line producer", "Unit production manager", "Director of photography", "Production designer", "Set decorator", "Prop master", "Costume designer", "Makeup artist", "Stunt coordinator", "Sound mixer", "Foley artist", "Colorist", "Dialogue editor", "ADR supervisor", "VFX supervisor", "First AD", "Second AD", "Production coordinator", "Location scout", "Script coordinator", "Writers' room PA", "Editor"],
+  "U2VhdHRsZSBOZWlnaGJvcmhvb2Rz": ["Ballard", "Fremont", "Capitol Hill", "Queen Anne", "Wallingford", "Green Lake", "Ravenna", "University District", "Magnolia", "Phinney Ridge", "Greenwood", "Crown Hill", "Beacon Hill", "Columbia City", "Georgetown", "SoDo", "Pioneer Square", "Belltown", "South Lake Union", "Eastlake", "Madison Park", "Madrona", "Central District", "Leschi", "Mount Baker", "Seward Park", "Rainier Valley", "Northgate", "Lake City", "West Seattle"],
   
-  "Q2F0IEJyZWVkcw==": ["Siamese", "Persian", "Maine Coon", "Ragdoll", "Bengal", "Sphynx", "British Shorthair", "Scottish Fold", "Abyssinian", "Russian Blue", "Birman", "Norwegian Forest", "Burmese", "Exotic Shorthair", "Devon Rex", "Cornish Rex", "Oriental Shorthair", "Tonkinese", "Somali", "Turkish Angora", "Manx", "Chartreux", "Savannah", "Balinese", "Himalayan", "Ocicat", "Bombay", "Ragamuffin", "Singapura", "American Shorthair"],
+  "Q2l0aWVz": ["Paris", "London", "Tokyo", "New York", "Rome", "Barcelona", "Istanbul", "Amsterdam", "Prague", "Vienna", "Budapest", "Athens", "Lisbon", "Dublin", "Edinburgh", "Venice", "Florence", "Milan", "Madrid", "Seville", "Berlin", "Munich", "Copenhagen", "Stockholm", "Oslo", "Helsinki", "Reykjavik", "Marrakech", "Cairo", "Bangkok"],
   
-  "MzAgUm9jayBDaGFyYWN0ZXJz": ["Liz Lemon", "Jack Donaghy", "Tracy Jordan", "Jenna Maroney", "Kenneth Parcell", "Pete Hornberger", "Frank Rossitano", "Cerie Xerox", "Grizz Griswold", "Dot Com", "Jonathan", "Dr. Leo Spaceman", "Devon Banks", "Elisa", "Carol Burnett", "Dennis Duffy", "Criss Chros", "Floyd DeBarber", "Avery Jessup", "Paul L'astname", "Danny Baker", "Wesley Snipes", "Cooter Burger", "Diana Jessup", "Hazel Wassername", "Josh Girard", "Gavin Volure", "Kathy Geiss", "Milton Greene", "Angie Jordan"],
+  "TGFuZG1hcmtz": ["Eiffel Tower", "Statue of Liberty", "Big Ben", "Colosseum", "Great Wall", "Taj Mahal", "Stonehenge", "Machu Picchu", "Christ the Redeemer", "Sydney Opera House", "Golden Gate Bridge", "Petra", "Angkor Wat", "Sagrada Família", "Leaning Tower of Pisa", "Parthenon", "Acropolis", "Notre Dame", "Tower Bridge", "Brandenburg Gate", "Arc de Triomphe", "Forbidden City", "Burj Khalifa", "Space Needle", "CN Tower", "Gateway Arch", "Hollywood Sign", "Mount Rushmore", "Statue of David", "Sistine Chapel"],
+  
+  "Q291bnRyaWVz": ["France", "Italy", "Spain", "Greece", "Portugal", "Germany", "Netherlands", "Belgium", "Switzerland", "Austria", "Norway", "Sweden", "Denmark", "Finland", "Iceland", "Ireland", "Scotland", "England", "Poland", "Czech Republic", "Hungary", "Croatia", "Turkey", "Morocco", "Egypt", "Thailand", "Vietnam", "Japan", "South Korea", "Australia"],
+  
+  "S2l0Y2hlbiBVdGVuc2lscw==": ["Whisk", "Spatula", "Ladle", "Tongs", "Peeler", "Grater", "Strainer", "Colander", "Measuring cups", "Mixing bowl", "Cutting board", "Chef's knife", "Paring knife", "Bread knife", "Can opener", "Corkscrew", "Rolling pin", "Pastry brush", "Basting brush", "Meat thermometer", "Kitchen shears", "Garlic press", "Lemon squeezer", "Potato masher", "Pizza cutter", "Mandoline", "Mortar and pestle", "Bench scraper", "Zester", "Kitchen timer"],
+  
+  "Q2F0IEJlaGF2aW9y": ["Slow blink", "Kneading", "Head bunting", "Chattering", "Loaf position", "Zoomies", "Tail puffing", "Airplane ears", "Making biscuits", "Trilling", "Bunny kicks", "Belly up", "Purring", "Hissing", "Grooming", "Scratching post", "Hiding", "Stalking", "Pouncing", "Meowing at door", "Knocking things over", "Midnight crazies", "Bringing prey", "Scent marking", "Whisker stress", "Dilated pupils", "Slow tail swish", "Chirping at birds", "Rolling over", "Head pressing"],
+  
+  "QmFzZWJhbGwgVGVybXM=": ["Strike", "Ball", "Home run", "Single", "Double", "Triple", "Walk", "Strikeout", "Fly ball", "Ground ball", "Pop fly", "Line drive", "Bunt", "Sacrifice", "Error", "Inning", "Out", "Run", "RBI", "Earned run", "Save", "Win", "Loss", "Shutout", "Perfect game", "No-hitter", "Cycle", "Grand slam", "Bases loaded", "Full count"],
   
   "QnJlYWQgVHlwZXM=": ["Sourdough", "Baguette", "Ciabatta", "Focaccia", "Brioche", "Challah", "Rye", "Pumpernickel", "Whole wheat", "Multigrain", "Pita", "Naan", "Roti", "Tortilla", "Injera", "Lavash", "Flatbread", "English muffin", "Bagel", "Croissant", "Pain de mie", "Pullman loaf", "Boule", "Batard", "Ficelle", "Pain au levain", "Miche", "Fougasse", "Panettone", "Babka"],
   
-  "SW5kb29yIFBsYW50cw==": ["Pothos", "Snake plant", "Monstera", "Philodendron", "Spider plant", "ZZ plant", "Rubber plant", "Fiddle leaf fig", "Peace lily", "Chinese evergreen", "Dracaena", "Prayer plant", "Calathea", "Fern", "English ivy", "Bird of paradise", "Jade plant", "String of pearls", "String of hearts", "Aloe vera", "Succulents", "Cactus", "Hoya", "Peperomia", "Anthurium", "Croton", "Dieffenbachia", "Schefflera", "Cast iron plant", "Tradescantia"],
-  
-  "Q29mZmVlIERlZmVjdHM=": ["Overextraction", "Underextraction", "Channeling", "Burnt", "Sour", "Bitter", "Weak", "Watery", "Muddy", "Flat", "Stale", "Astringent", "Metallic", "Cardboard", "Grassy", "Papery", "Rubbery", "Earthy", "Musty", "Moldy", "Smoky", "Ashy", "Chemical", "Medicinal", "Fermented", "Rancid", "Oxidized", "Baked", "Roasty", "Scorched"],
-  
-  "QmFzZWJhbGwgUGxheWVycw==": ["Ichiro Suzuki", "Ken Griffey Jr", "Edgar Martinez", "Randy Johnson", "Felix Hernandez", "Jay Buhner", "Alex Rodriguez", "Derek Jeter", "Mariano Rivera", "Aaron Judge", "Babe Ruth", "Lou Gehrig", "Mickey Mantle", "Joe DiMaggio", "Yogi Berra", "Whitey Ford", "Bernie Williams", "Jorge Posada", "Robinson Cano", "CC Sabathia", "Andy Pettitte", "Don Mattingly", "Reggie Jackson", "Paul O'Neill", "Tino Martinez", "Hideki Matsui", "Dave Winfield", "Rickey Henderson", "Wade Boggs", "Goose Gossage"],
-  
-  "Q29sb3JzIG9mIFRoaW5ncw==": ["Chartreuse", "Cerulean", "Vermilion", "Ochre", "Sienna", "Umber", "Crimson", "Scarlet", "Magenta", "Cyan", "Turquoise", "Teal", "Indigo", "Violet", "Lavender", "Mauve", "Periwinkle", "Coral", "Salmon", "Peach", "Apricot", "Cream", "Ivory", "Beige", "Taupe", "Ecru", "Olive", "Moss", "Sage", "Mint"],
-  
-  "RmxlYWJhZyBDaGFyYWN0ZXJz": ["Fleabag", "The Priest", "Claire", "Boo", "Martin", "Godmother", "Harry", "Bus Rodent", "Hilary", "Belinda", "Jake", "Arsehole Guy", "Finland Guy", "Bank Manager", "Klare", "Counsellor", "Dad", "Step-Mum", "Chatty Man", "Sexhibition Woman", "The Lecturer", "Café Regular", "Trophy Wife", "Quiet Man", "Loud Waiter", "Silent Café Woman", "Annoying Woman", "Handsome Stranger", "Guinea Pig Café Owner", "Funeral Goer"],
-  
-  "QmFraW5nIFRlY2huaXF1ZXM=": ["Creaming", "Folding", "Laminating", "Proofing", "Working dough", "Blind baking", "Docking", "Scoring", "Dusting", "Glazing", "Tempering chocolate", "Blooming gelatin", "Making a slurry", "Sifting", "Whipping", "Beating", "Cutting in butter", "Rubbing in", "Chilling dough", "Resting dough", "Stretching dough", "Rolling out", "Egg wash", "Parbaking", "Caramelizing", "Making meringue", "Separating eggs", "Ribboning", "Soft peaks", "Stiff peaks"],
-  
-  "UGxvdCBEZXZpY2Vz": ["Voiceover", "Foreshadowing", "Frame narrative", "Flash-forward", "Framing device", "Bottle episode", "Two-hander", "Cold open", "Ensemble piece", "Anthology", "Story within a story", "Parallel narrative", "Nonlinear narrative", "In medias res", "Time skip", "Montage", "B-plot", "C-plot", "Story arc", "Season finale", "Pilot episode", "Series finale", "Backdoor pilot", "Crossover episode", "Multi-camera", "Single-camera", "Talking heads", "Mockumentary", "Episode tag", "Teaser"],
-  
-  "UE5XIEZvb2Rz": ["Geoduck", "Dungeness crab", "Copper River salmon", "Rainier cherries", "Marionberries", "Aplets and Cotlets", "Tillamook cheese", "Walla Walla onions", "Hood strawberries", "Oysters", "Chanterelles", "Morels", "Huckleberries", "Salmon candy", "Smoked salmon", "Clam chowder", "Fish and chips", "Teriyaki", "Pho", "Banh mi", "Dim sum", "Poke", "Beecher's cheese", "Dick's burgers", "Ivar's", "Piroshky", "Ellenos yogurt", "Top Pot", "Molly Moon's", "Rachel's Ginger Beer"]
+  "SW5kb29yIFBsYW50cw==": ["Pothos", "Snake plant", "Monstera", "Philodendron", "Spider plant", "ZZ plant", "Rubber plant", "Fiddle leaf fig", "Peace lily", "Chinese evergreen", "Dracaena", "Prayer plant", "Calathea", "Fern", "English ivy", "Bird of paradise", "Jade plant", "String of pearls", "String of hearts", "Aloe vera", "Succulents", "Cactus", "Hoya", "Peperomia", "Anthurium", "Croton", "Dieffenbachia", "Schefflera", "Cast iron plant", "Tradescantia"]
 };
 
 const CATEGORY_HINTS = {
   "TW92aWUgVHJvcGVz": [
-    "Common storytelling devices you've seen a hundred times.",
-    "Narrative shortcuts and familiar plot mechanics."
+    "Recurring storytelling patterns in film and TV.",
+    "Familiar narrative devices you've seen countless times."
   ],
   
-  "Q29va2luZyBNaXN0YWtlcw==": [
-    "Things that go wrong in the kitchen.",
-    "Common errors that ruin dishes."
+  "V2luZXM=": [
+    "Varietals and regional types.",
+    "What you'd order at dinner or find at a wine shop."
   ],
   
-  "QmFzZWJhbGwgU2l0dWF0aW9ucw==": [
-    "Game scenarios and strategic plays.",
-    "Moments that change the game's outcome."
+  "Q2hlZXNlIFZhcmlldGllcw==": [
+    "Types from around the world.",
+    "What's available at a good cheese counter."
+  ],
+  
+  "Q29ja3RhaWxz": [
+    "Classic and modern mixed drinks.",
+    "What a bartender might make for you."
+  ],
+  
+  "Q29va2luZyBUZWNobmlxdWVz": [
+    "Methods of preparing food.",
+    "Ways chefs apply heat or transform ingredients."
   ],
   
   "UGxhbnQgU3RyZXNzIFNpZ25hbHM=": [
-    "Visual cues that something's wrong with your plants.",
-    "Symptoms of unhealthy growing conditions."
+    "Visual indicators of plant health issues.",
+    "What you see when something's wrong in the garden."
   ],
   
-  "U2VhdHRsZSBOZWlnaGJvcmhvb2Rz": [
-    "Districts and areas around the city.",
-    "Places you'd take the bus to in Seattle."
+  "Rmxvd2Vycw==": [
+    "Blooms found in gardens and bouquets.",
+    "Common flowering plants."
   ],
   
-  "VGhlIEJlYXIgVGVybXM=": [
-    "Kitchen lingo from the restaurant industry.",
-    "What you'd hear yelled during service."
+  "VHJlZXM=": [
+    "Woody plant species.",
+    "Common deciduous and evergreen varieties."
   ],
   
-  "Q2F0IEJlaGF2aW9y": [
-    "Things your feline does and what they mean.",
-    "Body language and actions of domestic cats."
+  "QmlyZHM=": [
+    "Feathered creatures.",
+    "Species you might spot in nature."
   ],
   
-  "R0JCTyBDaGFsbGVuZ2Vz": [
-    "Technical bakes from the famous tent.",
-    "Things Paul and Prue judge harshly."
+  "TW91bnRhaW5z": [
+    "Famous peaks worldwide.",
+    "Notable summits across continents."
+  ],
+  
+  "Uml2ZXJz": [
+    "Major waterways.",
+    "Famous flowing bodies of water."
   ],
   
   "Q29nbml0aXZlIEJpYXNlcw==": [
-    "Mental shortcuts that lead to errors in thinking.",
-    "Psychology concepts about how brains get tricked."
+    "Mental shortcuts that lead to thinking errors.",
+    "Psychological patterns that affect judgment."
   ],
   
-  "R2FyZGVuaW5nIFRhc2tz": [
-    "Actions gardeners perform throughout the season.",
-    "Techniques for healthy plant growth."
+  "RmFtb3VzIE5vdmVsaXN0cw==": [
+    "Well-known fiction writers.",
+    "Authors celebrated for their literary works."
   ],
   
-  "SVRhbGlhbiBQYXN0YSBEaXNoZXM=": [
-    "Classic preparations from Italy.",
-    "How the sauce is traditionally made."
+  "RmFtb3VzIFBhaW50ZXJz": [
+    "Artists known for visual works.",
+    "Masters of painting through the ages."
   ],
   
-  "RnJlbmNoIENvb2tpbmcgVGVybXM=": [
-    "Culinary vocabulary from French cuisine.",
-    "Techniques and preparations with French names."
+  "Q29tcG9zZXJz": [
+    "Creators of classical music.",
+    "Famous orchestral and piano composers."
   ],
   
-  "U1ZVIEVwaXNvZGUgVHlwZXM=": [
-    "Recurring storylines from Law & Order: SVU.",
-    "Case structures Benson and Stabler investigate."
+  "U2hha2VzcGVhcmUgUGxheXM=": [
+    "Works by the Bard.",
+    "Titles from the famous English playwright."
   ],
   
-  "TmV3IEVuZ2xhbmQgVGhpbmdz": [
-    "Regional vocabulary and cultural touchstones.",
-    "What makes New England distinct."
+  "QmVhdGxlcyBTb25ncw==": [
+    "Hits from the Fab Four.",
+    "Tracks by Liverpool's most famous band."
   ],
   
-  "V2FzaGluZ3RvbiBEQyBUaGluZ3M=": [
-    "Places, landmarks, and local references.",
-    "What you'd know from living in the District."
+  "RGlzbmV5IE1vdmllcw==": [
+    "Animated classics from this studio.",
+    "Family films from the mouse house."
   ],
   
-  "S2l0Y2hlbiBUZXh0dXJlcw==": [
-    "Words to describe how food feels.",
-    "Mouthfeel and consistency descriptors."
+  "VFYgU2hvd3M=": [
+    "Popular television series.",
+    "Acclaimed programs across genres."
   ],
   
   "UGFya3MgYW5kIFJlYyBDaGFyYWN0ZXJz": [
-    "People from Pawnee, Indiana.",
-    "Who works at or interacts with the Parks Department."
+    "Residents and workers in Pawnee.",
+    "People from the beloved sitcom."
   ],
   
-  "VGhlIE9mZmljZSBDaGFyYWN0ZXJz": [
-    "Employees and associates of Dunder Mifflin.",
-    "People from Scranton and beyond."
+  "RmlsbSBEaXJlY3RvcnM=": [
+    "People who've helmed major movies.",
+    "Celebrated filmmakers behind the camera."
   ],
   
-  "VFYgSm9icw==": [
-    "Behind-the-scenes roles in TV production.",
-    "What you'd see in the end credits."
+  "U2VhdHRsZSBOZWlnaGJvcmhvb2Rz": [
+    "Districts around the Emerald City.",
+    "Areas locals know well."
   ],
   
-  "Q2F0IEJyZWVkcw==": [
-    "Recognized feline varieties.",
-    "Pedigreed cats with distinct traits."
+  "Q2l0aWVz": [
+    "Major urban centers.",
+    "Famous metropolitan areas worldwide."
   ],
   
-  "MzAgUm9jayBDaGFyYWN0ZXJz": [
-    "People from the TGS writers' room and beyond.",
-    "Who Liz Lemon interacts with at work and in life."
+  "TGFuZG1hcmtz": [
+    "Iconic structures and monuments.",
+    "Famous sites tourists visit."
+  ],
+  
+  "Q291bnRyaWVz": [
+    "Nations of the world.",
+    "Sovereign states across continents."
+  ],
+  
+  "S2l0Y2hlbiBVdGVuc2lscw==": [
+    "Tools for cooking and prep.",
+    "What's in kitchen drawers and on counters."
+  ],
+  
+  "Q2F0IEJlaGF2aW9y": [
+    "Things felines do.",
+    "Actions and body language of domestic cats."
+  ],
+  
+  "QmFzZWJhbGwgVGVybXM=": [
+    "Fundamental vocabulary of the sport.",
+    "What you'd hear at the ballpark."
   ],
   
   "QnJlYWQgVHlwZXM=": [
-    "Varieties of baked goods made with flour and yeast.",
-    "What you'd find at a bakery or make at home."
+    "Varieties of baked goods.",
+    "What you'd find at a bakery."
   ],
   
   "SW5kb29yIFBsYW50cw==": [
-    "Greenery that thrives inside your home.",
-    "Houseplants for low to bright light."
-  ],
-  
-  "Q29mZmVlIERlZmVjdHM=": [
-    "Flavors and problems in a bad brew.",
-    "What went wrong with your espresso or drip."
-  ],
-  
-  "QmFzZWJhbGwgUGxheWVycw==": [
-    "Notable athletes from Seattle and New York.",
-    "Mariners and Yankees legends."
-  ],
-  
-  "Q29sb3JzIG9mIFRoaW5ncw==": [
-    "Specific shades beyond the basic spectrum.",
-    "Precise color names used in art and design."
-  ],
-  
-  "RmxlYWJhZyBDaGFyYWN0ZXJz": [
-    "People from the critically acclaimed series.",
-    "Who appears across the two seasons."
-  ],
-  
-  "QmFraW5nIFRlY2huaXF1ZXM=": [
-    "Methods for making pastries and desserts.",
-    "Actions bakers take in the kitchen."
-  ],
-  
-  "UGxvdCBEZXZpY2Vz": [
-    "Structural tools writers use to tell stories.",
-    "Narrative techniques in TV and film."
-  ],
-  
-  "UE5XIEZvb2Rz": [
-    "Regional specialties from the Pacific Northwest.",
-    "What's unique to Seattle and surrounding areas."
+    "Greenery for your home.",
+    "Houseplants that thrive indoors."
   ]
 };
 
