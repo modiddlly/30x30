@@ -1053,7 +1053,28 @@ return `
 { e:"💙", k:"heart blue" },
 { e:"💜", k:"heart purple" },
 { e:"🅰️", k:"letter text alphabet" },
- { e:"🌀", k:"spiral swirl pattern" }  
+ { e:"🌀", k:"spiral swirl pattern" },
+ { e: (() => {
+  const cx=32,vb=64,sw=1.8;
+  const sk="#5E6672",f1="#E7EAEE",f2="#D7DCE3",bd="#B7BEC8",wn="#2D3A4B",sh="rgba(0,0,0,.12)";
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 ${vb} ${vb}"><g fill="none" stroke="none">`
+  +`<ellipse cx="${cx}" cy="58.5" rx="12" ry="2" fill="${sh}"/>`
+  +`<path d="M32 4.5V16.2" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M28.7 16.5C29.4 13.9 30.5 12.4 32 12.4C33.5 12.4 34.6 13.9 35.3 16.5Z" fill="${f2}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
+  +`<path d="M14.2 25.2C17.2 19.2 23 17 32 17C41 17 46.8 19.2 49.8 25.2C46.8 30.4 41 30.8 32 30.4C23 30.8 17.2 30.4 14.2 25.2Z" fill="${f1}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
+  +`<path d="M17.2 26C21 30.4 26 31 32 31.2C38 31 43 30.4 46.8 26" stroke="${bd}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<g fill="${wn}" opacity=".9"><circle cx="23" cy="25.5" r="1.1"/><circle cx="27.5" cy="26.8" r="1.1"/><circle cx="32" cy="27.2" r="1.1"/><circle cx="36.5" cy="26.8" r="1.1"/><circle cx="41" cy="25.5" r="1.1"/></g>`
+  +`<path d="M10.2 33.6C14 37 22 37.4 32 37.4C42 37.4 50 37 53.8 33.6C50 32.2 42 32 32 32C22 32 14 32.2 10.2 33.6Z" fill="${f2}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
+  +`<path d="M28.6 30.4C29.4 37 30.4 48.6 30.8 48.6H33.2C33.6 48.6 34.6 37 35.4 30.4Z" fill="${f2}" stroke="${sk}" stroke-width="${sw}" stroke-linejoin="round"/>`
+  +`<path d="M30.4 35V47.2" stroke="${bd}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M29.2 47.8L20.4 58" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M34.8 47.8L43.6 58" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M32 48.6V58" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M18.6 58H25.4" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M38.6 58H45.4" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`<path d="M29 58H35" stroke="${sk}" stroke-width="${sw}" stroke-linecap="round"/>`
+  +`</g></svg>`;
+  })(), k:"space needle seattle tower landmark" }
 ]
 
 let _emojiPop = null;
@@ -1172,6 +1193,7 @@ function _renderEmojiGrid_(query = ""){
 
     // Keep existing behavior: store exactly the library string
     cell.dataset.emoji = emoji;
+    cell.title = String(opt?.k || "").replace(/\s+/g, ", ");
 
     // Render: if it's SVG, insert as HTML; otherwise as text
     if (emoji.trim().startsWith("<svg")){
@@ -2270,6 +2292,16 @@ async function onTileClick(tileId){
   removeTile(absorbed);
   _clearHintedPair_?.();
 
+  // Auto-clear narrow down if no dimmed tiles remain
+  if (state.hintMode?.type === "narrowDown" && state.hintMode.active){
+    const hasDimmed = state.tiles.some(x => !x.removed && !x.done && state.hintMode.cats &&
+      !new Set(state.hintMode.cats).has(x.cat));
+    if (!hasDimmed){
+      _narrowDownExit_();
+      showMsg("Narrow down cleared — no tiles left to dim.", { sticky: false });
+    }
+  }
+
   state.selectedId = null;
   renderAll();
   setHUD();
@@ -2934,44 +2966,58 @@ els.board?.addEventListener("mouseout", (e) => {
 });
 
 function _checkEndGame_(){
- const total = _totalOptions_();
-const winScore = _winScore_();
+  const total = _totalOptions_();
+  const winScore = _winScore_();
   if (state.gameOver) return;
   if (!_allTilesMatched_()) return;
 
   state.gameOver = true;
 
+  // collect category done colors for fireworks
+  const catColors = Object.values(state.doneColors || {}).filter(Boolean);
+  // boost saturation for fireworks (done colors are pastel)
+  const fwColors = catColors.map(c => {
+    const m = c.match(/hsl\((\d+)\s+(\d+)%\s+(\d+)%\)/);
+    if (!m) return c;
+    return `hsl(${m[1]} 85% 55%)`;
+  });
+
+  const errRate = total ? (state.mistakes / total) : 0;
+  const errPct = (errRate * 100).toFixed(1);
+
   // Chill: always celebrate, no % message
   if (state.mode === "chill"){
     showEndOverlay("You did it! 🎉");
-    startFireworks();
+    startFireworks({ colors: fwColors.length ? fwColors : null });
+    _dimHudForEndGame_();
     save();
     return;
   }
 
-  
-  
-    const successScore = total - state.mistakes;
-  const errRate = total ? (state.mistakes / total) : 0;
-
-  // current full-fireworks cutoff implied by your existing win rule:
-  // successScore >= winScore  <=>  mistakes/total <= (total - winScore)/total
   const fullErrMax = total ? ((total - winScore) / total) : 0;
 
   if (errRate <= fullErrMax){
-    // full fireworks (same as current “win” fireworks)
-    showEndOverlay("You did it! 🎉");
-    startFireworks({ grayscale:false });
+    showEndOverlay(`You did it! 🎉  (${errPct}% error rate)`);
+    startFireworks({ colors: fwColors.length ? fwColors : null });
   } else if (errRate <= 0.50){
-    // between current cutoff and 50% => short greyscale fireworks
-    showEndOverlay("You did it! 🎉  (a little messy)");
-    startFireworks({ grayscale:true, durationMs: 3000 });
+    showEndOverlay(`You did it! 🎉  (${errPct}% error rate — a little messy)`);
+    startFireworks({ colors: fwColors.length ? fwColors : null, durationMs: 4000 });
   } else {
-    const errPct = errRate * 100;
-    showEndOverlay(`You did it. ${errPct.toFixed(1)}% error rate — still counts.`);
+    showEndOverlay(`You did it. ${errPct}% error rate — still counts.`);
+    startFireworks({ grayscale: true, durationMs: 3000 });
   }
 
+  _dimHudForEndGame_();
   save();
+}
+
+function _dimHudForEndGame_(){
+  // dim all HUD buttons except New Game
+  document.querySelectorAll(".hud .btn, .hud .iconBtn").forEach(el => {
+    if (el.id === "newGameBtn" || el.closest(".hud__newgame")) return;
+    el.style.opacity = "0.35";
+    el.style.pointerEvents = "none";
+  });
 }
 
   //HINT
@@ -4946,7 +4992,7 @@ function stopFireworks(){
   }
 }
 
-function startFireworks({ grayscale = false, durationMs = 0 } = {}){
+function startFireworks({ grayscale = false, durationMs = 0, colors = null } = {}){
     if (_fwRunning){
     if (_fwStopTimer) { clearTimeout(_fwStopTimer); _fwStopTimer = 0; }
     if (durationMs > 0) _fwStopTimer = setTimeout(stopFireworks, durationMs);
@@ -4973,22 +5019,18 @@ resize();
 
     class Firework{
       constructor(){
-        if (grayscale){
-        const l = 55 + Math.random() * 25;
-        this.color = `hsl(0, 0%, ${l}%)`;
-      } else {
-        if (grayscale){
+        if (colors && colors.length){
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+        } else if (grayscale){
           const l = 55 + Math.random() * 25;
           this.color = `hsl(0, 0%, ${l}%)`;
         } else {
           this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
         }
-      }
         this.x = Math.random() * w;
         this.y = h;
         this.tx = Math.random() * w;
         this.ty = Math.random() * (h / 2);
-        this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
         this.speed = 2 + Math.random() * 2;
         this.angle = Math.atan2(this.ty - this.y, this.tx - this.x);
         this.vx = Math.cos(this.angle) * this.speed;
@@ -5466,7 +5508,13 @@ document.getElementById("endOverlay")?.addEventListener("pointerdown", (e) => {
 }
 
 const loaded = load();
-if (loaded){
+// Validate saved state matches current categories — if user swapped categories, discard stale save
+const _savedCatsValid_ = (() => {
+  if (!loaded || !Array.isArray(loaded.tiles) || loaded.tiles.length === 0) return false;
+  const currentCats = new Set(Object.keys(getCategories()));
+  return loaded.tiles.every(t => currentCats.has(t.cat));
+})();
+if (loaded && _savedCatsValid_){
   state = loaded;
   if (typeof state.dimMode !== "boolean") state.dimMode = false;
 
@@ -5494,6 +5542,10 @@ if (loaded){
   setHUD();
 
 }else{
+  if (loaded && !_savedCatsValid_){
+    console.log("[INIT] Saved state has stale categories — starting fresh.");
+    localStorage.removeItem(STORAGE_KEY);
+  }
   newGame();
 }
 
