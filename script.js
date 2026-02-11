@@ -5500,7 +5500,13 @@ document.getElementById("endOverlay")?.addEventListener("pointerdown", (e) => {
 }
 
 const loaded = load();
-if (loaded){
+// Validate saved state matches current categories — if user swapped categories, discard stale save
+const _savedCatsValid_ = (() => {
+  if (!loaded || !Array.isArray(loaded.tiles) || loaded.tiles.length === 0) return false;
+  const currentCats = new Set(Object.keys(getCategories()));
+  return loaded.tiles.every(t => currentCats.has(t.cat));
+})();
+if (loaded && _savedCatsValid_){
   state = loaded;
   if (typeof state.dimMode !== "boolean") state.dimMode = false;
 
@@ -5528,6 +5534,10 @@ if (loaded){
   setHUD();
 
 }else{
+  if (loaded && !_savedCatsValid_){
+    console.log("[INIT] Saved state has stale categories — starting fresh.");
+    localStorage.removeItem(STORAGE_KEY);
+  }
   newGame();
 }
 
